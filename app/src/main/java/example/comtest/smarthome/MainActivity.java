@@ -16,9 +16,16 @@ public class MainActivity extends AppCompatActivity {
 
         final Button button = (Button) findViewById(R.id.buttonTest);
 
+
+
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 System.out.println("HEEEEEHHOO");
+                requestToApi rta = new requestToApi(getApplicationContext());
+                String response;
+                response = rta.postToServer("on", "1", "1");
+                System.out.println(response);
+
             }
         });
     }
