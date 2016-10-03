@@ -9,8 +9,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="example.comtest.smarthome.MainActivity">
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="Test"
+        android:id="@+id/buttonTest"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="133dp" />
 </RelativeLayout>
