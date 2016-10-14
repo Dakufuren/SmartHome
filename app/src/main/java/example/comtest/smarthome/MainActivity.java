@@ -23,6 +23,10 @@ public class MainActivity extends AppCompatActivity {
         final Button button = (Button) findViewById(R.id.buttonTest);
 
         SharedPreferences SmartHousePrefs = getSharedPreferences(PREFS, 0);
+
+        RecievePubNub pubnub = new RecievePubNub();
+        pubnub.subscribe();
+
         if (SmartHousePrefs.getString("lamp1", "Nothing found").toLowerCase().equals("on")) {
             //Change the icon for the lamp to show that it is on
             lamp1Status = "on";
