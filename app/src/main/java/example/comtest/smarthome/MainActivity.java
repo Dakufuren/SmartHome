@@ -5,7 +5,11 @@ import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,10 +19,56 @@ public class MainActivity extends AppCompatActivity {
 
     private Button buttonTest;
 
+
+    private boolean LAMP_ONOFF = false;
+    private boolean LAMP_ONOFF2 = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        GridView gridview = (GridView) findViewById(R.id.gridview);
+        gridview.setAdapter(new ImageAdapter(this));
+
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                if(position == 0){
+
+                    Toast.makeText(MainActivity.this, "Lamp 1: " + LAMP_ONOFF,
+                            Toast.LENGTH_SHORT).show();
+                    if(LAMP_ONOFF == false){
+                        ImageView imageView = (ImageView) v;
+                        imageView.setImageResource(R.drawable.lamp_on);
+                        LAMP_ONOFF = true;
+                    }
+                    else{
+                        ImageView imageView = (ImageView) v;
+                        imageView.setImageResource(R.drawable.lamp_off);
+                        LAMP_ONOFF = false;
+                    }
+                }
+                if(position == 1){
+                    Toast.makeText(MainActivity.this, "Lamp 2: " + LAMP_ONOFF,
+                            Toast.LENGTH_SHORT).show();
+                    if(LAMP_ONOFF2 == false){
+                        ImageView imageView = (ImageView) v;
+                        imageView.setImageResource(R.drawable.lamp_on2);
+                        LAMP_ONOFF2 = true;
+                    }
+                    else{
+                        ImageView imageView = (ImageView) v;
+                        imageView.setImageResource(R.drawable.lamp_off2);
+                        LAMP_ONOFF2 = false;
+                    }
+                }
+                if(position == 2){
+                    Toast.makeText(MainActivity.this, "Temperature",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         final Button button = (Button) findViewById(R.id.buttonTest);
 
