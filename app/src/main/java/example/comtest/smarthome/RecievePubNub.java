@@ -108,12 +108,154 @@ public class RecievePubNub {
     }
 
     private void commandCheck(String commandId, String slotId, String deviceId){
-        //This will just be a template/mock up since we do not have the correct commands yet
-        if(commandId.equals("X")){
-            //whatever happends here we can add stuff to the sharedPreferences when we have the commands
-        }else if(commandId.equals("Y")){
+        int commandLength = commandId.length();
+        String value = commandId.substring(5,commandLength);
+        commandId = commandId.substring(0,5);
+        System.out.println("commandId: " + commandId + "       value: " + value);
 
+        //This will just be a template/mock up since we do not have the correct commands yet
+        if(commandId.equals("11000")){
+            //readAtticTemp   response = temp
+            if(value.equals("X")){
+                // error
+            }else{
+                //value will hold the temperature
+            }
+        }else if(commandId.equals("11100")){
+            //setAtticTemp      response = ack
+            if(value.equals("0")){
+
+            }else if(value.equals("1")){
+
+            }else if(value.equals("X")){
+                //X = error
+            }
+        }else if(commandId.equals("12000")){
+            // readRoomTemp     response = temp
+            if(value.equals("X")){
+                // error
+            }else{
+                //value will hold the temperature
+            }
+        }else if(commandId.equals("12200")){
+            //setRoomTemp       response = ack
+            if(value.equals("0")){
+
+            }else if(value.equals("1")){
+
+            }else if(value.equals("X")){
+                //X = error
+            }
+        }else if(commandId.equals("13000")){
+            //readOutTemp       response = temp
+            if(value.equals("X")){
+                // error
+            }else{
+                //value will hold the temperature
+            }
+        }else if(commandId.equals("14000")){
+            //readPowerCunsumption      response = power
+            if(value.equals("X")){
+                // error
+            }else{
+                //value will hold the power
+            }
+        }else if(commandId.equals("15000")){
+            //readFireAlarmStatus       response = 0 or 1 (1=fire)
+            if(value.equals("0")){
+
+            }else if(value.equals("1")){
+
+            }else if(value.equals("X")){
+                //X = error
+            }
+        }else if(commandId.equals("16000")){
+            //readBurglarAlarmStatus    response = 0 or 1 (1 = burglar)
+            if(value.equals("0")){
+
+            }else if(value.equals("1")){
+
+            }else if(value.equals("X")){
+                //X = error
+            }
+        }else if(commandId.equals("17000")){
+            //read water leakage status     response = 0 or 1 (1 = leakage)
+            if(value.equals("0")){
+
+            }else if(value.equals("1")){
+
+            }else if(value.equals("X")){
+                //X = error
+            }
+        }else if(commandId.equals("18000")){
+            //read stove status     response = status
+            if(value.equals("0")){
+
+            }else if(value.equals("1")){
+
+            }else if(value.equals("X")){
+                //X = error
+            }
+        }else if(commandId.equals("19000")){
+            //read window status    response = status
+            if(value.equals("0")){
+
+            }else if(value.equals("1")){
+
+            }else if(value.equals("X")){
+                //X = error
+            }
+        }else if(commandId.equals("21000")){
+            //read power outage status      response = status
+            if(value.equals("0")){
+
+            }else if(value.equals("1")){
+
+            }else if(value.equals("X")){
+                //X = error
+            }
+        }else if(commandId.equals("22000")){
+            //read attic fan status         response = status
+            if(value.equals("0")){
+
+            }else if(value.equals("1")){
+
+            }else if(value.equals("X")){
+                //X = error
+            }
+        }else if(commandId.equals("25000")){
+            //read indoor light status      response = status
+            if(value.equals("0")){
+
+            }else if(value.equals("1")){
+
+            }else if(value.equals("X")){
+                //X = error
+            }
+        }else if(commandId.equals("26000")){
+            //set indoor light      response = ack
+            if(value.equals("0")){
+                System.out.println("light is off");
+            }else if(value.equals("1")){
+                System.out.println("light is on");
+            }else if(value.equals("X")){
+                //X = error
+            }
+
+        }else if(commandId.equals("27000")){
+            //read outdoor light        response = status
+            if(value.equals("0")){
+
+            }else if(value.equals("1")){
+
+            }else if(value.equals("X")){
+                //X = error
+            }
         }
+
+
+
+
     }
 
 }

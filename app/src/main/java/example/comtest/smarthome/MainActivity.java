@@ -15,6 +15,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String PREFS = "SmartHousePrefs";
 
+
+    String apiResponse;
+
     String lamp1Status = null;
 
     private Button buttonTest;
@@ -28,22 +31,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        RecievePubNub pubnub = new RecievePubNub();
+        pubnub.subscribe();
+
         GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(new ImageAdapter(this));
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
+                requestToApi rta = new requestToApi(getApplicationContext());
                 if(position == 0){
 
                     Toast.makeText(MainActivity.this, "Lamp 1: " + LAMP_ONOFF,
                             Toast.LENGTH_SHORT).show();
                     if(LAMP_ONOFF == false){
+                        apiResponse = rta.postToServer("260001", "1", "1");
                         ImageView imageView = (ImageView) v;
                         imageView.setImageResource(R.drawable.lamp_on);
                         LAMP_ONOFF = true;
                     }
                     else{
+                        apiResponse = rta.postToServer("260000", "1", "1");
                         ImageView imageView = (ImageView) v;
                         imageView.setImageResource(R.drawable.lamp_off);
                         LAMP_ONOFF = false;
@@ -53,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Lamp 2: " + LAMP_ONOFF,
                             Toast.LENGTH_SHORT).show();
                     if(LAMP_ONOFF2 == false){
+
                         ImageView imageView = (ImageView) v;
                         imageView.setImageResource(R.drawable.lamp_on2);
                         LAMP_ONOFF2 = true;
@@ -74,8 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences SmartHousePrefs = getSharedPreferences(PREFS, 0);
 
-        RecievePubNub pubnub = new RecievePubNub();
-        pubnub.subscribe();
+
 
         if (SmartHousePrefs.getString("lamp1", "Nothing found").toLowerCase().equals("on")) {
             //Change the icon for the lamp to show that it is on
