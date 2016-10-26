@@ -1,5 +1,8 @@
 package example.comtest.smarthome;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.pubnub.api.*;
 import org.json.*;
@@ -21,6 +24,16 @@ import java.util.Arrays;
 
 
 public class RecievePubNub {
+
+    public static final String PREFS = "SmartHousePrefs";
+    private Context context;
+
+
+    //need to send applicationContext in order to use sharedprefs in a non activity class
+    public RecievePubNub(Context context) {
+        this.context = context;
+    }
+
 
     public void subscribe(){
         PNConfiguration pnConfiguration = new PNConfiguration();
@@ -89,6 +102,7 @@ public class RecievePubNub {
                     String slotId = jsonObj.getString("slotId");
                     String deviceId = jsonObj.getString("deviceId");
 
+
                     commandCheck(commandId, slotId, deviceId);
 
                 }catch(JSONException e){
@@ -112,6 +126,12 @@ public class RecievePubNub {
         String value = commandId.substring(5,commandLength);
         commandId = commandId.substring(0,5);
         System.out.println("commandId: " + commandId + "       value: " + value);
+
+        //initializing the shared prefs and the editor
+        SharedPreferences SmartHousePrefs = context.getSharedPreferences(PREFS, 0);
+        SharedPreferences.Editor editor = SmartHousePrefs.edit();
+
+
 
         //This will just be a template/mock up since we do not have the correct commands yet
         if(commandId.equals("11000")){
@@ -226,8 +246,11 @@ public class RecievePubNub {
         }else if(commandId.equals("25000")){
             //read indoor light status      response = status
             if(value.equals("0")){
+                System.out.println("light is off");
 
             }else if(value.equals("1")){
+                System.out.println("light is on");
+
 
             }else if(value.equals("X")){
                 //X = error
@@ -236,8 +259,16 @@ public class RecievePubNub {
             //set indoor light      response = ack
             if(value.equals("0")){
                 System.out.println("light is off");
+
+                //Saving the current state to the shared prefs
+                editor.putString("commandId", "off");
+                editor.commit();
             }else if(value.equals("1")){
                 System.out.println("light is on");
+
+                //Saving the current state to the shared prefs
+                editor.putString("commandId", "on");
+                editor.commit();
             }else if(value.equals("X")){
                 //X = error
             }

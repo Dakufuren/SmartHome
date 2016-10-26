@@ -25,15 +25,24 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean LAMP_ONOFF = false;
     private boolean LAMP_ONOFF2 = false;
+    private boolean FIRST_START = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (FIRST_START == true) {
+            requestToApi rta = new requestToApi(getApplicationContext());
+            rta.postToServer("260001", "1", "1");
+            FIRST_START = false;
+        }
 
-        RecievePubNub pubnub = new RecievePubNub();
+
+        RecievePubNub pubnub = new RecievePubNub(getApplicationContext());
         pubnub.subscribe();
+
+
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(new ImageAdapter(this));
@@ -83,31 +92,35 @@ public class MainActivity extends AppCompatActivity {
 
         final Button button = (Button) findViewById(R.id.buttonTest);
 
-        SharedPreferences SmartHousePrefs = getSharedPreferences(PREFS, 0);
 
 
 
-        if (SmartHousePrefs.getString("lamp1", "Nothing found").toLowerCase().equals("on")) {
-            //Change the icon for the lamp to show that it is on
-            lamp1Status = "on";
-        } else if (SmartHousePrefs.getString("lamp1", "Nothing found").toLowerCase().equals("off")) {
-            //change the icon for the lamp to show that it is off
-            lamp1Status = "off";
-        }
+
+
 
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                System.out.println("HEEEEEHHOO");
+                SharedPreferences SmartHousePrefs = getSharedPreferences(PREFS, 0);
+                if (SmartHousePrefs.getString("commandId", "Nothing found").toLowerCase().equals("on")) {
+                    //Change the icon for the lamp to show that it is on
+                    lamp1Status = "on";
+
+                } else if (SmartHousePrefs.getString("commandId", "Nothing found").toLowerCase().equals("off")) {
+                    //change the icon for the lamp to show that it is off
+                    lamp1Status = "off";
+                }
+
+                System.out.println(SmartHousePrefs.getString("commandId", "Nothing found") + "       " + "HEJ");
                 requestToApi rta = new requestToApi(getApplicationContext());
                 String response;
                 if (lamp1Status.toLowerCase().equals("on")) {
                     //posts the opposite of the current state to the database
-                    response = rta.postToServer("off", "1", "1");
+                    response = rta.postToServer("260000", "1", "1");
                     System.out.println(response);
                 } else if (lamp1Status.toLowerCase().equals("off")) {
                     //posts the opposite of the current state to the database
-                    response = rta.postToServer("on", "1", "1");
+                    response = rta.postToServer("260001", "1", "1");
                     System.out.println(response);
                 }
 
