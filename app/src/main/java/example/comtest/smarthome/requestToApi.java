@@ -16,8 +16,12 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.R.attr.category;
 
 /**
  * Created by bumblebee on 2016-10-03.
@@ -28,6 +32,7 @@ public class requestToApi {
     private RequestQueue requestQueue;
     private StringRequest request;
     private JsonObjectRequest request2;
+    private JsonObjectRequest getRequest;
     private static String URL = "http://smarthomeinterface.azurewebsites.net/home/3";
     Context context;
 
@@ -84,6 +89,49 @@ public class requestToApi {
 
         System.out.println("sending request");
         requestQueue.add(request2);
+
+        return response;
+    }
+
+    public String getFromServer(final String commandId, final String sensorId, final String userId){
+        requestQueue = Volley.newRequestQueue(context);
+
+        java.net.URL url = null;
+        String query = "?commandId=" + commandId +
+                "&sensorId=" + sensorId +
+                "&userId=" + userId +
+                "&unitChannel=" + "hkr_channel_unit";
+        try {
+            url = new URL("http", "smarthomeinterface.azurewebsites.net", "home/1" + query);
+        } catch (MalformedURLException ex) {
+            ex.printStackTrace();
+        }
+
+        getRequest = new JsonObjectRequest(
+                Request.Method.GET, url.toString(), null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("response here");
+                        try {
+                            System.out.println(response.getString("message"));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        System.out.println("sending request");
+        requestQueue.add(getRequest);
 
         return response;
     }

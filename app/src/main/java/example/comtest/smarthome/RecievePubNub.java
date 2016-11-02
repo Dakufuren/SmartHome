@@ -98,12 +98,13 @@ public class RecievePubNub {
 
                 try {
                     JSONObject jsonObj = new JSONObject(message.getMessage().toString());
-                    String commandId = jsonObj.getString("commandId");
-                    String slotId = jsonObj.getString("slotId");
-                    String deviceId = jsonObj.getString("deviceId");
+                    String sensorId = jsonObj.getString("sensorId");
+                    String valueId = jsonObj.getString("value");
+                    System.out.println(message.getMessage().toString());
 
+                    commandCheck(valueId, sensorId);
 
-                    commandCheck(commandId, slotId, deviceId);
+                    //commandCheck(commandId, slotId, deviceId);
 
                 }catch(JSONException e){
                     System.out.println("JSONException: " + e);
@@ -117,11 +118,11 @@ public class RecievePubNub {
             }
         });
 
-        pubnub.subscribe().channels(Arrays.asList("hkr_channel")).execute();
+        pubnub.subscribe().channels(Arrays.asList("hkr_channel_unit")).execute();
 
     }
 
-    private void commandCheck(String commandId, String slotId, String deviceId){
+    private void commandCheck(String commandId, String sensorId){
         int commandLength = commandId.length();
         String value = commandId.substring(5,commandLength);
         commandId = commandId.substring(0,5);
@@ -247,10 +248,13 @@ public class RecievePubNub {
             //read indoor light status      response = status
             if(value.equals("0")){
                 System.out.println("light is off");
+                editor.putString("commandId", "off");
+                editor.commit();
 
             }else if(value.equals("1")){
                 System.out.println("light is on");
-
+                editor.putString("commandId", "on");
+                editor.commit();
 
             }else if(value.equals("X")){
                 //X = error
