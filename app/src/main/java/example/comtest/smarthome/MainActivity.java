@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecievePubNub pubnub = new RecievePubNub(getApplicationContext());
-        pubnub.subscribe();
+        RecievePubNub.getInstance().setContext(getApplicationContext());
+        RecievePubNub.getInstance().subscribe();
 
         if (FIRST_START == true) {
             requestToApi rta = new requestToApi(getApplicationContext());
