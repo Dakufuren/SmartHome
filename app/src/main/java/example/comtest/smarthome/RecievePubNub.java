@@ -198,8 +198,12 @@ public class RecievePubNub {
         } else if (commandId.equals("15000")) {
             //readFireAlarmStatus       response = 0 or 1 (1=fire)
             if (value.equals("0")) {
+                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.lamp_off, "Fire!", "The roof is on fire");
+                fireNotification.startNotification();
 
             } else if (value.equals("1")) {
+                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.lamp_off, "Fire!", "The roof is on fire");
+                fireNotification.startNotification();
 
             } else if (value.equals("X")) {
                 //X = error

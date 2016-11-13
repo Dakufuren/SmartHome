@@ -1,6 +1,9 @@
 package example.comtest.smarthome;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.SharedPreferences;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -54,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
                                     int position, long id) {
                 requestToApi rta = new requestToApi(getApplicationContext());
                 if(position == 0){
-
                     Toast.makeText(MainActivity.this, "Lamp 1: " + LAMP_ONOFF,
                             Toast.LENGTH_SHORT).show();
                     if(LAMP_ONOFF == false){
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                         ImageView imageView = (ImageView) v;
                         imageView.setImageResource(R.drawable.lamp_on);
                         LAMP_ONOFF = true;
+                        NotificationHandler not = new NotificationHandler(getApplicationContext(), 0, "titel", "HejVärld");
                     }
                     else{
                         apiResponse = rta.postToServer("260000", "1", "1");
