@@ -173,6 +173,8 @@ public class RecievePubNub {
             if (value.equals("X")) {
                 // error
             } else {
+                editor.putString("roomTemperature", value.toString());
+                editor.commit();
                 //value will hold the temperature
             }
         } else if (commandId.equals("12200")) {
