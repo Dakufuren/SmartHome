@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         if (FIRST_START == true) {
             requestToApi rta = new requestToApi(getApplicationContext());
             rta.getFromServer("250000", "1", "1");
+
             FIRST_START = false;
         }
 

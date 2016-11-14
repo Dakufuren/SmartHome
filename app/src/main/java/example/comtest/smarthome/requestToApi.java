@@ -105,6 +105,7 @@ public class requestToApi {
             url = new URL("http", "smarthomeinterface.azurewebsites.net", "home/1" + query);
         } catch (MalformedURLException ex) {
             ex.printStackTrace();
+            System.out.println("Error in requests API1");
         }
 
         getRequest = new JsonObjectRequest(
@@ -118,6 +119,7 @@ public class requestToApi {
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            System.out.println("Error in requests API2");
                         }
 
 

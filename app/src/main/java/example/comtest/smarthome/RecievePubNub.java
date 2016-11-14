@@ -111,6 +111,7 @@ public class RecievePubNub {
                         // handle incoming messages
 
                         try {
+                            System.out.println(message.getMessage().toString());
                             JSONObject jsonObj = new JSONObject(message.getMessage().toString());
                             String sensorId = jsonObj.getString("sensorId");
                             String valueId = jsonObj.getString("value");
@@ -138,7 +139,9 @@ public class RecievePubNub {
     }
 
     private void commandCheck(String commandId, String sensorId) {
+        System.out.println("PubNub  CommandID:    " + commandId);
         int commandLength = commandId.length();
+        System.out.println("CommandLength:         " + commandLength);
         String value = commandId.substring(5, commandLength);
         commandId = commandId.substring(0, 5);
         System.out.println("commandId: " + commandId + "       value: " + value);
@@ -296,6 +299,35 @@ public class RecievePubNub {
             }
 
         } else if (commandId.equals("27000")) {
+            //read outdoor light        response = status
+            if (value.equals("0")) {
+
+            } else if (value.equals("1")) {
+
+            } else if (value.equals("X")) {
+                //X = error
+            }
+        } else if (commandId.equals("34000")) {
+            //read outdoor light        response = status
+            if (value.equals("0")) {
+
+            } else if (value.equals("1")) {
+
+            } else if (value.equals("X")) {
+                //X = error
+            }
+        } else if (commandId.equals("35000")) {
+            //read outdoor light        response = status
+            if (value.equals("0")) {
+                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.lamp_off, "Fire!", "The roof is on fire");
+                fireNotification.startNotification();
+            } else if (value.equals("1")) {
+                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.lamp_off, "Fire!", "The roof is on fire");
+                fireNotification.startNotification();
+            } else if (value.equals("X")) {
+                //X = error
+            }
+        } else if (commandId.equals("36000")) {
             //read outdoor light        response = status
             if (value.equals("0")) {
 
