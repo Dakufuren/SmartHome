@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
     private boolean LAMP_ONOFF = false;
     private boolean LAMP_ONOFF2 = false;
     private boolean FIRST_START = true;
+
+    View rowView;
+    ImageView img;
+    TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        GridView gridview = (GridView) findViewById(R.id.gridview);
+        final GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(new ImageAdapter(this));
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -62,36 +67,58 @@ public class MainActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                     if(LAMP_ONOFF == false){
                         apiResponse = rta.postToServer("260001", "1", "1");
-                        ImageView imageView = (ImageView) v;
-                        imageView.setImageResource(R.drawable.lamp_on);
+                        View viewItem = gridview.getChildAt(position);
+                        if (viewItem != null) {
+                            ImageView imgview = (ImageView) viewItem.findViewById(R.id.imageView1);
+                            imgview.setImageResource(R.drawable.lamp_on);
+                        }
+
                         LAMP_ONOFF = true;
                         NotificationHandler not = new NotificationHandler(getApplicationContext(), 0, "titel", "HejVärld");
                     }
                     else{
                         apiResponse = rta.postToServer("260000", "1", "1");
-                        ImageView imageView = (ImageView) v;
-                        imageView.setImageResource(R.drawable.lamp_off);
+                        View viewItem = gridview.getChildAt(position);
+                        if (viewItem != null) {
+                            ImageView imgview = (ImageView) viewItem.findViewById(R.id.imageView1);
+                            imgview.setImageResource(R.drawable.lamp_off);
+                        }
+
                         LAMP_ONOFF = false;
                     }
                 }
                 if(position == 1){
-                    Toast.makeText(MainActivity.this, "Lamp 2: " + LAMP_ONOFF,
+                    Toast.makeText(MainActivity.this, "Lamp 2: " + LAMP_ONOFF2,
                             Toast.LENGTH_SHORT).show();
                     if(LAMP_ONOFF2 == false){
 
-                        ImageView imageView = (ImageView) v;
-                        imageView.setImageResource(R.drawable.lamp_on2);
+                        View viewItem = gridview.getChildAt(position);
+                        if (viewItem != null) {
+                            ImageView imgview = (ImageView) viewItem.findViewById(R.id.imageView1);
+                            imgview.setImageResource(R.drawable.lamp_on2);
+                        }
+
                         LAMP_ONOFF2 = true;
                     }
                     else{
-                        ImageView imageView = (ImageView) v;
-                        imageView.setImageResource(R.drawable.lamp_off2);
+                        View viewItem = gridview.getChildAt(position);
+                        if (viewItem != null) {
+                            ImageView imgview = (ImageView) viewItem.findViewById(R.id.imageView1);
+                            imgview.setImageResource(R.drawable.lamp_off2);
+                        }
+
                         LAMP_ONOFF2 = false;
                     }
                 }
                 if(position == 2){
                     Toast.makeText(MainActivity.this, "Temperature",
                             Toast.LENGTH_SHORT).show();
+                    View viewItem = gridview.getChildAt(position);
+                    if (viewItem != null) {
+                        TextView textview = (TextView) viewItem.findViewById(R.id.textView1);
+                        textview.setText("28 degrees");
+                    }
+
                 }
             }
         });
