@@ -28,7 +28,7 @@ import static android.R.attr.category;
  */
 public class requestToApi {
 
-    String response;
+    String responsePost;
     private RequestQueue requestQueue;
     private StringRequest request;
     private JsonObjectRequest request2;
@@ -90,7 +90,7 @@ public class requestToApi {
         System.out.println("sending request");
         requestQueue.add(request2);
 
-        return response;
+        return responsePost;
     }
 
     public String getFromServer(final String commandId, final String sensorId, final String userId){
@@ -135,6 +135,54 @@ public class requestToApi {
         System.out.println("sending request");
         requestQueue.add(getRequest);
 
-        return response;
+        return responsePost;
+    }
+
+    public String checkUser(final String username, final String password, final LogInActivity logInAct){
+        requestQueue = Volley.newRequestQueue(context);
+        JSONObject infoSent = new JSONObject();
+        try {
+            infoSent.put("username", username);
+            infoSent.put("password", password);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        request2 = new JsonObjectRequest(
+                Request.Method.POST,"http://smarthomeinterface.azurewebsites.net/user/login", infoSent,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("response here");
+
+                        try {
+                            if(response.has("id")){
+                                responsePost = response.getString("id");
+                                logInAct.checkCredantial(responsePost);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("Error: " );
+                responsePost = "Wrong credentials";
+                logInAct.checkCredantial(responsePost);
+            }
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
+
+        System.out.println("sending request");
+        requestQueue.add(request2);
+        return responsePost;
     }
 }
