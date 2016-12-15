@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,9 +15,10 @@ import android.widget.TextView;
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
     private static LayoutInflater inflater = null;
+    private Integer[] buttons;
 
-
-    public ImageAdapter(Context c) {
+    public ImageAdapter(Context c, Integer[] buttonsToShow) {
+        buttons = buttonsToShow;
         mContext = c;
         inflater = ( LayoutInflater )mContext.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -71,4 +71,11 @@ public class ImageAdapter extends BaseAdapter {
             "TEMP"
 
     };
+    public void setMThumbIds(Integer [] setItems){
+        mThumbIds = setItems;
+    }
+    public void setMThumbTexts(String [] setItems){
+        mThumbTexts = setItems;
+    }
+
 }

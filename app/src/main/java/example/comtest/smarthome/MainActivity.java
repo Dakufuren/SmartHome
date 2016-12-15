@@ -1,12 +1,8 @@
 package example.comtest.smarthome;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.content.SharedPreferences;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.SharedPreferencesCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -15,10 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String PREFS = "SmartHousePrefs";
-
+    ImageAdapter adapter;
 
     String apiResponse;
 
@@ -39,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        populateGridButtons();
         RecievePubNub.getInstance().setContext(getApplicationContext());
         RecievePubNub.getInstance().subscribe();
 
@@ -53,16 +52,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+         adapter = new ImageAdapter(this, mThumbIds) ;
 
         final GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new ImageAdapter(this));
+        gridview.setAdapter(adapter);
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 requestToApi rta = new requestToApi(getApplicationContext());
-                if(position == 0){
+                if(position == gridButtonArrayList.get(0).getCurrentPosition()){
                     Toast.makeText(MainActivity.this, "Lamp 1: " + LAMP_ONOFF,
                             Toast.LENGTH_SHORT).show();
                     if(LAMP_ONOFF == false){
@@ -87,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                         LAMP_ONOFF = false;
                     }
                 }
-                if(position == 1){
+                else if(position == gridButtonArrayList.get(1).getCurrentPosition()){
                     Toast.makeText(MainActivity.this, "Lamp 2: " + LAMP_ONOFF2,
                             Toast.LENGTH_SHORT).show();
                     if(LAMP_ONOFF2 == false){
@@ -109,8 +108,13 @@ public class MainActivity extends AppCompatActivity {
 
                         LAMP_ONOFF2 = false;
                     }
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-                if(position == 2){
+                else if(position == gridButtonArrayList.get(2).getCurrentPosition()){
                     Toast.makeText(MainActivity.this, "Temperature",
                             Toast.LENGTH_SHORT).show();
                     View viewItem = gridview.getChildAt(position);
@@ -123,6 +127,69 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
     }
+    private Integer[] mThumbIds = {
+            R.drawable.lamp_off, R.drawable.lamp_off2,
+            R.drawable.temperature
+    };
+
+    private String[] mThumbTexts = {
+           "", "",
+           "TEMP"
+
+    };
+    private void testCaller(GridView gridview){ //For test purpose. Boolean value for each button.
+        boolean[] booleanArray = new boolean[3];
+        booleanArray[0] = true;
+        booleanArray[1] = true;
+        booleanArray[2] = false;
+        updateTheGridView(booleanArray, gridview);
+    }
+
+
+    private List<gridButton> gridButtonArrayList = new ArrayList<gridButton>();
+
+    private void populateGridButtons(){
+        for(int i=0;i<mThumbIds.length;i++){
+            gridButton gridButton = new gridButton(mThumbIds[i],mThumbTexts[i],true,i);
+            gridButtonArrayList.add(gridButton);
+        }
+    }
+    private void updateTheGridView(boolean[] visibleOnArray, GridView gridView){ //Unnecessary complicated with many loops. Can be optimized with hash maps etc.
+        //populateGridButtons(); Behövs inte
+        List<String> textList = new ArrayList<String>();
+        List<Integer> imageList = new ArrayList<Integer>();
+        for(int j =0;j<gridButtonArrayList.size();j++){//resetta till ett värde som inte finns
+            gridButtonArrayList.get(j).setCurrentPosition(100);
+        }
+        for (int i = 0; i < mThumbIds.length; i++) {
+            if (visibleOnArray[i]) {
+                textList.add(mThumbTexts[i]);
+                imageList.add(mThumbIds[i]);
+
+            }
+        }
+        Integer[] mThumbIds = new Integer[imageList.size()];
+        String[] mThumbText = new String[textList.size()];
+        for(int i=0;i<textList.size();i++){
+            mThumbIds[i] = imageList.get(i);
+            mThumbText[i] = textList.get(i);
+        }
+
+        for(int h=0;h<mThumbIds.length;h++){
+            for(int i=0;i<gridButtonArrayList.size();i++){
+                if(gridButtonArrayList.get(i).getButtonLink()==(mThumbIds[h])){
+                    gridButtonArrayList.get(i).setCurrentPosition(h);
+                    Log.d("see","Changed " +gridButtonArrayList.get(i).getButtonLink().toString() +"   To:   "  + gridButtonArrayList.get(i).getCurrentPosition());
+                }
+            }
+
+        }
+        adapter.setMThumbIds(mThumbIds);
+        adapter.setMThumbTexts(mThumbText);
+        adapter.notifyDataSetChanged();
+        gridView.invalidateViews();
+        gridView.setAdapter(adapter);
+    }
+
 }
