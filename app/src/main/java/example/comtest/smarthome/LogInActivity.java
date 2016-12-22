@@ -51,6 +51,8 @@ public class LogInActivity  extends AppCompatActivity {
         if (response.equalsIgnoreCase("Wrong credentials")) {
             errorMessageTV.setText("Wrong username or password!");
         } else{
+            DataStorage.getInstance().setUserId(response);
+            System.out.println("THE USER ID IS: " + response);
             Intent myIntent = new Intent(LogInActivity.this, MainActivity.class);
             startActivity(myIntent);
         }

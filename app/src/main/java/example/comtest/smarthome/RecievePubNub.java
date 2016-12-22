@@ -108,8 +108,8 @@ public class RecievePubNub {
 
                     @Override
                     public void message(PubNub pubnub, PNMessageResult message) {
-                        // handle incoming messages
-
+                            // handle incoming messages
+                        System.out.println("Incoming message in PUBNUB!!!!!");
                         try {
                             System.out.println(message.getMessage().toString());
                             JSONObject jsonObj = new JSONObject(message.getMessage().toString());

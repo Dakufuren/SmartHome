@@ -1,6 +1,7 @@
 package example.comtest.smarthome;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -9,10 +10,12 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -183,6 +186,48 @@ public class requestToApi {
 
         System.out.println("sending request");
         requestQueue.add(request2);
+        return responsePost;
+    }
+
+    public String getFromServerTest(){
+        requestQueue = Volley.newRequestQueue(context);
+        System.out.println("TESTING:   getFromServerTEST1");
+        java.net.URL url = null;
+
+        try {
+            url = new URL("http", "smarthomeinterface.azurewebsites.net", "/getHomeServers/" + DataStorage.getInstance().getUserId());
+        } catch (MalformedURLException ex) {
+            ex.printStackTrace();
+            System.out.println("Error in requests API1");
+        }
+
+        JsonArrayRequest req = new JsonArrayRequest(url.toString(),
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        System.out.println("SUCCESSFULL RESPONSE FROM HOMESERVER");
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                // Get the json object and display it
+                                JSONObject jo = response.getJSONObject(i);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                System.out.println("Error in requests API2");
+                            }
+
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        System.out.println("sending request");
+        requestQueue.add(req);
+
         return responsePost;
     }
 }

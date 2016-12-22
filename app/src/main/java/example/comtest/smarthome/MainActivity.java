@@ -1,6 +1,10 @@
 package example.comtest.smarthome;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
 
     String apiResponse;
 
+    private List<gridButton> gridButtonArrayList = new ArrayList<gridButton>();
+    private FragmentTransaction ftr = null;
+    private FragmentManager fm = null;
+
     String lamp1Status = null;
 
     private Button buttonTest;
@@ -38,13 +46,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         populateGridButtons();
+
         RecievePubNub.getInstance().setContext(getApplicationContext());
         RecievePubNub.getInstance().subscribe();
 
+
+
+
         if (FIRST_START == true) {
             requestToApi rta = new requestToApi(getApplicationContext());
-            rta.getFromServer("250000", "1", "1");
+            //rta.getFromServerTest();
 
             FIRST_START = false;
         }
@@ -108,11 +121,11 @@ public class MainActivity extends AppCompatActivity {
 
                         LAMP_ONOFF2 = false;
                     }
-                    try {
-                        Thread.sleep(2000);
+                    /*try {
+                        //Thread.sleep(2000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                    }
+                    }*/
                 }
                 else if(position == gridButtonArrayList.get(2).getCurrentPosition()){
                     Toast.makeText(MainActivity.this, "Temperature",
@@ -124,20 +137,33 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 }
+                else if(position == gridButtonArrayList.get(3).getCurrentPosition()){
+                    View viewItem = gridview.getChildAt(position);
+                    if (viewItem != null) {
+                        test();
+                    }
+                }
             }
         });
 
     }
+
+    private void test(){
+        Intent myIntent = new Intent(MainActivity.this, RadiatorActivity.class);
+        startActivity(myIntent);
+    }
+
+
     private Integer[] mThumbIds = {
             R.drawable.lamp_off, R.drawable.lamp_off2,
-            R.drawable.temperature
+            R.drawable.temperature, R.drawable.lamp_on2,
     };
 
     private String[] mThumbTexts = {
            "", "",
-           "TEMP"
-
+           "TEMP", "",
     };
+
     private void testCaller(GridView gridview){ //For test purpose. Boolean value for each button.
         boolean[] booleanArray = new boolean[3];
         booleanArray[0] = true;
@@ -147,7 +173,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private List<gridButton> gridButtonArrayList = new ArrayList<gridButton>();
 
     private void populateGridButtons(){
         for(int i=0;i<mThumbIds.length;i++){

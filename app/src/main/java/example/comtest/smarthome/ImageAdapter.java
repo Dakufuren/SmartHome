@@ -47,8 +47,8 @@ public class ImageAdapter extends BaseAdapter {
         // TODO Auto-generated method stub
         Holder holder=new Holder();
         View rowView;
-
-        rowView = inflater.inflate(R.layout.custom_gridlist, null);
+        rowView = inflater.inflate(R.layout.custom_gridlist, null, false);
+        //rowView = inflater.inflate(R.layout.custom_gridlist, null);
         holder.tv=(TextView) rowView.findViewById(R.id.textView1);
         holder.img=(ImageView) rowView.findViewById(R.id.imageView1);
 
@@ -61,14 +61,14 @@ public class ImageAdapter extends BaseAdapter {
     // references to our images
     private Integer[] mThumbIds = {
             R.drawable.lamp_off, R.drawable.lamp_off2,
-            R.drawable.temperature
+            R.drawable.temperature, R.drawable.lamp_on2
 
     };
 
     // references to our texts
     private String[] mThumbTexts = {
             "", "",
-            "TEMP"
+            "TEMP", ""
 
     };
     public void setMThumbIds(Integer [] setItems){
