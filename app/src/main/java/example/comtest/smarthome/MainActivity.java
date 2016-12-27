@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     View rowView;
     ImageView img;
     TextView tv;
+    private GridView gridview;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
          adapter = new ImageAdapter(this, mThumbIds) ;
 
-        final GridView gridview = (GridView) findViewById(R.id.gridview);
+        gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(adapter);
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -114,10 +116,24 @@ public class MainActivity extends AppCompatActivity {
                         test();
                     }
                 }
+                else if(position == gridButtonArrayList.get(4).getCurrentPosition()){
+                    View viewItem = gridview.getChildAt(position);
+                    if (viewItem != null) {
+                        testHouseActivity();
+                    }
+                }
             }
         });
 
     }
+    @Override
+    public void onResume() {    //On resume lunches on create activity therefore needs to not call grid view change on first set up.
+        super.onResume();
+        if(DataStorage.getInstance().isFirstStart()==false){
+            updateTheGridView(DataStorage.getInstance().getButtonBooleanArray(),gridview);
+        }
+    }
+
     private void createImage(GridView gridView,String drawableValue, int position){
         View viewItem = gridView.getChildAt(position);
         if (viewItem != null) {
@@ -130,16 +146,20 @@ public class MainActivity extends AppCompatActivity {
         Intent myIntent = new Intent(MainActivity.this, RadiatorActivity.class);
         startActivity(myIntent);
     }
+    private void testHouseActivity(){
+        Intent myIntent = new Intent(MainActivity.this, ChooseHouseActivity.class);
+        startActivity(myIntent);
+    }
 
 
     private Integer[] mThumbIds = {
             R.drawable.lamp_off, R.drawable.lamp_off2,
-            R.drawable.temperature, R.drawable.lamp_on2,
+            R.drawable.temperature, R.drawable.lamp_on2,R.drawable.lamp_on2
     };
 
     private String[] mThumbTexts = {
            "", "",
-           "TEMP", "",
+           "TEMP", "",""
     };
 
     private void testCaller(GridView gridview){ //For test purpose. Boolean value for each button.

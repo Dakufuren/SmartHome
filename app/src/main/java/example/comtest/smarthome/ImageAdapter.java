@@ -61,14 +61,14 @@ public class ImageAdapter extends BaseAdapter {
     // references to our images
     private Integer[] mThumbIds = {
             R.drawable.lamp_off, R.drawable.lamp_off2,
-            R.drawable.temperature, R.drawable.lamp_on2
+            R.drawable.temperature, R.drawable.lamp_on2,R.drawable.lamp_on2
 
     };
 
     // references to our texts
     private String[] mThumbTexts = {
             "", "",
-            "TEMP", ""
+            "TEMP", "",""
 
     };
     public void setMThumbIds(Integer [] setItems){
