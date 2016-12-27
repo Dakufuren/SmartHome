@@ -189,7 +189,7 @@ public class requestToApi {
         return responsePost;
     }
 
-    public String getFromServerTest(){
+    public String getAllHousesFromUser(){
         requestQueue = Volley.newRequestQueue(context);
         System.out.println("TESTING:   getFromServerTEST1");
         java.net.URL url = null;
@@ -210,6 +210,144 @@ public class requestToApi {
                             try {
                                 // Get the json object and display it
                                 JSONObject jo = response.getJSONObject(i);
+                                System.out.println("JSON OBJECTET I ARRAYN" + jo.toString());
+                                DataStorage.getInstance().addHomeServerToList(jo.get("Homeserver_id").toString());
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                System.out.println("Error in requests API2");
+                            }
+
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        System.out.println("sending request");
+        requestQueue.add(req);
+
+        return responsePost;
+    }
+
+    public String getAllRoomsFromHouse(String homeserverId){
+        requestQueue = Volley.newRequestQueue(context);
+        System.out.println("TESTING:   getFromServerTEST1");
+        java.net.URL url = null;
+
+        try {
+            url = new URL("http", "smarthomeinterface.azurewebsites.net", "/getRooms/" + homeserverId);
+        } catch (MalformedURLException ex) {
+            ex.printStackTrace();
+            System.out.println("Error in requests API1");
+        }
+
+        JsonArrayRequest req = new JsonArrayRequest(url.toString(),
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        System.out.println("SUCCESSFULL RESPONSE FROM HOMESERVER");
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                // Get the json object and display it
+                                JSONObject jo = response.getJSONObject(i);
+                                System.out.println("JSON OBJECTET I ARRAYN" + jo.toString());
+                                //DataStorage.getInstance().addHouseToList(jo.get("Homeserver_id").toString());
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                System.out.println("Error in requests API2");
+                            }
+
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        System.out.println("sending request");
+        requestQueue.add(req);
+
+        return responsePost;
+    }
+
+    public String getAllDevicesFromRoom(String roomId){
+        requestQueue = Volley.newRequestQueue(context);
+        System.out.println("TESTING:   getFromServerTEST1");
+        java.net.URL url = null;
+
+        try {
+            url = new URL("http", "smarthomeinterface.azurewebsites.net", "/getDevices/" + roomId);
+        } catch (MalformedURLException ex) {
+            ex.printStackTrace();
+            System.out.println("Error in requests API1");
+        }
+
+        JsonArrayRequest req = new JsonArrayRequest(url.toString(),
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        System.out.println("SUCCESSFULL RESPONSE FROM HOMESERVER");
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                // Get the json object and display it
+                                JSONObject jo = response.getJSONObject(i);
+                                System.out.println("JSON OBJECTET I ARRAYN" + jo.toString());
+                                //DataStorage.getInstance().addHouseToList(jo.get("Homeserver_id").toString());
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                System.out.println("Error in requests API2");
+                            }
+
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        System.out.println("sending request");
+        requestQueue.add(req);
+
+        return responsePost;
+    }
+
+    public String getAllSensorsFromDevice(String deviceId){
+        requestQueue = Volley.newRequestQueue(context);
+        System.out.println("TESTING:   getFromServerTEST1");
+        java.net.URL url = null;
+
+        try {
+            url = new URL("http", "smarthomeinterface.azurewebsites.net", "/getDevices/" + deviceId);
+        } catch (MalformedURLException ex) {
+            ex.printStackTrace();
+            System.out.println("Error in requests API1");
+        }
+
+        JsonArrayRequest req = new JsonArrayRequest(url.toString(),
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        System.out.println("SUCCESSFULL RESPONSE FROM HOMESERVER");
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                // Get the json object and display it
+                                JSONObject jo = response.getJSONObject(i);
+                                System.out.println("JSON OBJECTET I ARRAYN" + jo.toString());
+                                //DataStorage.getInstance().addHouseToList(jo.get("Homeserver_id").toString());
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 System.out.println("Error in requests API2");

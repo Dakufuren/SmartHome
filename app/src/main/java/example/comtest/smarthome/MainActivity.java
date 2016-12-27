@@ -52,12 +52,14 @@ public class MainActivity extends AppCompatActivity {
         RecievePubNub.getInstance().setContext(getApplicationContext());
         RecievePubNub.getInstance().subscribe();
 
+        requestToApi rta = new requestToApi(getApplicationContext());
+        rta.getAllHousesFromUser();
 
+        //rta.getAllDevicesFromRoom(DataStorage.getInstance().);
 
 
         if (FIRST_START == true) {
-            requestToApi rta = new requestToApi(getApplicationContext());
-            //rta.getFromServerTest();
+
 
             FIRST_START = false;
         }
