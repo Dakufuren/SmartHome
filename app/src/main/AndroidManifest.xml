@@ -17,8 +17,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LogInActivity" ></activity>
-        <activity android:name=".RadiatorActivity" ></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".RadiatorActivity" />
+        <activity
+            android:name=".ChooseHouseActivity"
+            android:label="@string/title_activity_choose_house"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

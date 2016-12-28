@@ -11,6 +11,8 @@ public class DataStorage {
     private static DataStorage dataStorage;
     private int radiatorTemparature;  //used for the radiator part
     private String userId;
+    private boolean firstStart = true;
+    private boolean[] buttonBooleanArray;
 
     private ArrayList<HomeServer> homeServerList = new ArrayList<>();
     private ArrayList<RoomInfo> roomList = new ArrayList<>();
@@ -42,6 +44,22 @@ public class DataStorage {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public boolean[] getButtonBooleanArray() {
+        return buttonBooleanArray;
+    }
+
+    public void setButtonBooleanArray(boolean[] butonBooleanArray) {
+        this.buttonBooleanArray = butonBooleanArray;
+    }
+
+    public boolean isFirstStart() {
+        return firstStart;
+    }
+
+    public void setFirstStart(boolean firstStart) {
+        this.firstStart = firstStart;
     }
 
     public ArrayList<HomeServer> getHomeServerList() {
