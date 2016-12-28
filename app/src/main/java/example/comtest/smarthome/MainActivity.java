@@ -52,10 +52,14 @@ public class MainActivity extends AppCompatActivity {
         RecievePubNub.getInstance().setContext(getApplicationContext());
         RecievePubNub.getInstance().subscribe();
 
-        requestToApi rta = new requestToApi(getApplicationContext());
-        rta.getAllHousesFromUser();
+        //For testing remove when done
+        DataStorage.getInstance().setUserId("3");
 
-        //rta.getAllDevicesFromRoom(DataStorage.getInstance().);
+
+        requestToApi rta = new requestToApi(getApplicationContext());
+        rta.getAllHousesFromUser();  //Denna fixar biffen med att hämta info från hemservern med all info, och då menar jag ALLT. Även Stefan Löfvens hemligheter
+
+
 
 
         if (FIRST_START == true) {

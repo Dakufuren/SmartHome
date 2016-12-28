@@ -12,7 +12,10 @@ public class DataStorage {
     private int radiatorTemparature;  //used for the radiator part
     private String userId;
 
-    private ArrayList<String> homeServerList = new ArrayList<>();
+    private ArrayList<HomeServer> homeServerList = new ArrayList<>();
+    private ArrayList<RoomInfo> roomList = new ArrayList<>();
+    private ArrayList<DeviceInfo> deviceList = new ArrayList<>();
+    private ArrayList<SensorInfo> sensorList = new ArrayList<>();
 
     private DataStorage(){
     }
@@ -41,11 +44,36 @@ public class DataStorage {
         this.userId = userId;
     }
 
-    public ArrayList<String> getHomeServerList() {
+    public ArrayList<HomeServer> getHomeServerList() {
         return homeServerList;
     }
 
-    public void addHomeServerToList(String addHomeServer) {
-        homeServerList.add(addHomeServer);
+    public void addHomeServerToList(String name, String id, String userId ) {
+        homeServerList.add(new HomeServer(name, id, userId));
     }
+
+    public ArrayList<RoomInfo> getRoomList() {
+        return roomList;
+    }
+
+    public ArrayList<DeviceInfo> getDeviceList() {
+        return deviceList;
+    }
+
+    public ArrayList<SensorInfo> getSensorList() {
+        return sensorList;
+    }
+
+    public void addRoomToList(String name, String id, String homeServerId ) {
+        roomList.add(new RoomInfo(id, name, homeServerId));
+    }
+
+    public void addDeviceToList(String name, String id, String roomId ) {
+        deviceList.add(new DeviceInfo(name, id, roomId));
+    }
+
+    public void addSensorToList(String name, String id, String type, String deviceId, String value ) {
+        sensorList.add(new SensorInfo(name, id, type, deviceId, value));
+    }
+
 }
