@@ -194,6 +194,7 @@ public class RecievePubNub {
             if (value.equals("0000X")) {
                 // error
             } else {
+                changeStateOfSensor(convertTemp(value), sensorId);
                 //value will hold the temperature
             }
         } else if (commandId.equals("14000")) {
@@ -201,6 +202,7 @@ public class RecievePubNub {
             if (value.equals("000X")) {
                 // error
             } else {
+                changeStateOfSensor(value, sensorId);
                 //value will hold the power
             }
         } else if (commandId.equals("15000")) {
@@ -319,10 +321,10 @@ public class RecievePubNub {
         } else if (commandId.equals("34000")) {
             //read outdoor light        response = status
             if (value.equals("0000")) {
-                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.lamp_off, "Water Leakage!", "Water everywhere");
+                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.leakage, "Water Leakage!", "Water everywhere");
                 fireNotification.startNotification();
             } else if (value.equals("0001")) {
-                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.lamp_off, "Water Leakage!", "Water everywhere");
+                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.leakage, "Water Leakage!", "Water everywhere");
                 fireNotification.startNotification();
             } else if (value.equals("000X")) {
                 //X = error
@@ -330,10 +332,10 @@ public class RecievePubNub {
         } else if (commandId.equals("35000")) {
             //read outdoor light        response = status
             if (value.equals("0000")) {
-                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.lamp_off, "Fire!", "The roof is on fire");
+                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.fire, "Fire!", "The roof is on fire");
                 fireNotification.startNotification();
             } else if (value.equals("0001")) {
-                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.lamp_off, "Fire!", "The roof is on fire");
+                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.fire, "Fire!", "The roof is on fire");
                 fireNotification.startNotification();
             } else if (value.equals("000X")) {
                 //X = error
@@ -341,10 +343,10 @@ public class RecievePubNub {
         } else if (commandId.equals("36000")) {
             //read outdoor light        response = status
             if (value.equals("0000")) {
-                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.lamp_off, "BURGLARS!", "The burglar is in your house!");
+                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.burglar, "BURGLARS!", "The burglar is in your house!");
                 fireNotification.startNotification();
             } else if (value.equals("0001")) {
-                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.lamp_off, "BURGLARS!", "The burglar is in your house!");
+                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.burglar, "BURGLARS!", "The burglar is in your house!");
                 fireNotification.startNotification();
             } else if (value.equals("000X")) {
                 //X = error
