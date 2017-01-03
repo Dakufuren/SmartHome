@@ -16,6 +16,7 @@ import com.pubnub.api.models.consumer.PNStatus;
 import com.pubnub.api.models.consumer.pubsub.PNMessageResult;
 import com.pubnub.api.models.consumer.pubsub.PNPresenceEventResult;
 
+import java.sql.SQLOutput;
 import java.util.Arrays;
 
 /**
@@ -154,193 +155,219 @@ public class RecievePubNub {
         //This will just be a template/mock up since we do not have the correct commands yet
         if (commandId.equals("11000")) {
             //readAtticTemp   response = temp
-            if (value.equals("X")) {
+            if (value.equals("0000X")) {
                 // error
             } else {
+                changeStateOfSensor(convertTemp(value), sensorId);
                 //value will hold the temperature
             }
         } else if (commandId.equals("11100")) {
             //setAtticTemp      response = ack
-            if (value.equals("0")) {
-
-            } else if (value.equals("1")) {
-
-            } else if (value.equals("X")) {
+            if (value.equals("0000")) {
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("0001")) {
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("000X")) {
                 //X = error
             }
         } else if (commandId.equals("12000")) {
             // readRoomTemp     response = temp
-            if (value.equals("X")) {
+            if (value.equals("000X")) {
                 // error
             } else {
-                editor.putString("roomTemperature", value.toString());
-                editor.commit();
+                changeStateOfSensor(convertTemp(value), sensorId);
+                //editor.putString("roomTemperature", value.toString());
+                //editor.commit();
                 //value will hold the temperature
             }
         } else if (commandId.equals("12200")) {
             //setRoomTemp       response = ack
-            if (value.equals("0")) {
-
-            } else if (value.equals("1")) {
-
-            } else if (value.equals("X")) {
+            if (value.equals("0000")) {
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("0001")) {
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("000X")) {
                 //X = error
             }
         } else if (commandId.equals("13000")) {
             //readOutTemp       response = temp
-            if (value.equals("X")) {
+            if (value.equals("0000X")) {
                 // error
             } else {
                 //value will hold the temperature
             }
         } else if (commandId.equals("14000")) {
             //readPowerCunsumption      response = power
-            if (value.equals("X")) {
+            if (value.equals("000X")) {
                 // error
             } else {
                 //value will hold the power
             }
         } else if (commandId.equals("15000")) {
             //readFireAlarmStatus       response = 0 or 1 (1=fire)
-            if (value.equals("0")) {
-                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.lamp_off, "Fire!", "The roof is on fire");
-                fireNotification.startNotification();
+            if (value.equals("0000")) {
+                changeStateOfSensor(value, sensorId);
 
-            } else if (value.equals("1")) {
-                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.lamp_off, "Fire!", "The roof is on fire");
-                fireNotification.startNotification();
+            } else if (value.equals("0001")) {
+                changeStateOfSensor(value, sensorId);
 
-            } else if (value.equals("X")) {
+            } else if (value.equals("000X")) {
                 //X = error
             }
         } else if (commandId.equals("16000")) {
             //readBurglarAlarmStatus    response = 0 or 1 (1 = burglar)
             if (value.equals("0")) {
-
-            } else if (value.equals("1")) {
-
-            } else if (value.equals("X")) {
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("0001")) {
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("000X")) {
                 //X = error
             }
         } else if (commandId.equals("17000")) {
             //read water leakage status     response = 0 or 1 (1 = leakage)
-            if (value.equals("0")) {
-
-            } else if (value.equals("1")) {
-
-            } else if (value.equals("X")) {
+            if (value.equals("0000")) {
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("0001")) {
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("000X")) {
                 //X = error
             }
         } else if (commandId.equals("18000")) {
             //read stove status     response = status
-            if (value.equals("0")) {
-
-            } else if (value.equals("1")) {
-
-            } else if (value.equals("X")) {
+            if (value.equals("0000")) {
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("0001")) {
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("000X")) {
                 //X = error
             }
         } else if (commandId.equals("19000")) {
             //read window status    response = status
-            if (value.equals("0")) {
-
-            } else if (value.equals("1")) {
-
-            } else if (value.equals("X")) {
+            if (value.equals("0000")) {
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("0001")) {
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("000X")) {
                 //X = error
             }
         } else if (commandId.equals("21000")) {
             //read power outage status      response = status
-            if (value.equals("0")) {
-
-            } else if (value.equals("1")) {
-
-            } else if (value.equals("X")) {
+            if (value.equals("0000")) {
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("0001")) {
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("000X")) {
                 //X = error
             }
         } else if (commandId.equals("22000")) {
             //read attic fan status         response = status
-            if (value.equals("0")) {
-
-            } else if (value.equals("1")) {
-
-            } else if (value.equals("X")) {
+            if (value.equals("0000")) {
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("0001")) {
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("000X")) {
                 //X = error
             }
         } else if (commandId.equals("25000")) {
             //read indoor light status      response = status
-            if (value.equals("0")) {
-                System.out.println("light is off");
+            if (value.equals("0000")) {
+                /*System.out.println("light is off");
                 editor.putString("commandId", "off");
                 editor.commit();
-
-            } else if (value.equals("1")) {
-                System.out.println("light is on");
+                */
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("0001")) {
+                /*System.out.println("light is on");
                 editor.putString("commandId", "on");
                 editor.commit();
-
-            } else if (value.equals("X")) {
+                */
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("000X")) {
                 //X = error
             }
         } else if (commandId.equals("26000")) {
             //set indoor light      response = ack
-            if (value.equals("0")) {
-                System.out.println("light is off");
+            if (value.equals("0000")) {
+                /*System.out.println("light is off");
 
                 //Saving the current state to the shared prefs
                 editor.putString("commandId", "off");
-                editor.commit();
-            } else if (value.equals("1")) {
-                System.out.println("light is on");
+                editor.commit();*/
+
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("0001")) {
+                /*System.out.println("light is on");
 
                 //Saving the current state to the shared prefs
                 editor.putString("commandId", "on");
-                editor.commit();
-            } else if (value.equals("X")) {
+                editor.commit();*/
+
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("000X")) {
                 //X = error
             }
 
         } else if (commandId.equals("27000")) {
             //read outdoor light        response = status
-            if (value.equals("0")) {
-
-            } else if (value.equals("1")) {
-
-            } else if (value.equals("X")) {
+            if (value.equals("0000")) {
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("0001")) {
+                changeStateOfSensor(value, sensorId);
+            } else if (value.equals("000X")) {
                 //X = error
             }
         } else if (commandId.equals("34000")) {
             //read outdoor light        response = status
-            if (value.equals("0")) {
-
-            } else if (value.equals("1")) {
-
-            } else if (value.equals("X")) {
+            if (value.equals("0000")) {
+                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.lamp_off, "Water Leakage!", "Water everywhere");
+                fireNotification.startNotification();
+            } else if (value.equals("0001")) {
+                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.lamp_off, "Water Leakage!", "Water everywhere");
+                fireNotification.startNotification();
+            } else if (value.equals("000X")) {
                 //X = error
             }
         } else if (commandId.equals("35000")) {
             //read outdoor light        response = status
-            if (value.equals("0")) {
+            if (value.equals("0000")) {
                 NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.lamp_off, "Fire!", "The roof is on fire");
                 fireNotification.startNotification();
-            } else if (value.equals("1")) {
+            } else if (value.equals("0001")) {
                 NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.lamp_off, "Fire!", "The roof is on fire");
                 fireNotification.startNotification();
-            } else if (value.equals("X")) {
+            } else if (value.equals("000X")) {
                 //X = error
             }
         } else if (commandId.equals("36000")) {
             //read outdoor light        response = status
-            if (value.equals("0")) {
-
-            } else if (value.equals("1")) {
-
-            } else if (value.equals("X")) {
+            if (value.equals("0000")) {
+                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.lamp_off, "BURGLARS!", "The burglar is in your house!");
+                fireNotification.startNotification();
+            } else if (value.equals("0001")) {
+                NotificationHandler fireNotification = new NotificationHandler(context, R.drawable.lamp_off, "BURGLARS!", "The burglar is in your house!");
+                fireNotification.startNotification();
+            } else if (value.equals("000X")) {
                 //X = error
             }
         }
 
 
+    }
+
+    private void changeStateOfSensor(String sensorId, String value){
+        for(SensorInfo sensor : DataStorage.getInstance().getSensorList()){
+            if(sensor.getId().equals(sensorId)){
+                sensor.setValue(value);
+            }
+        }
+    }
+
+    private String convertTemp(String value){
+        String trueTemp = "";
+        int temp = (5 * Integer.parseInt(value) * 100)/1024;
+        System.out.println("Method: convertTemp, realTemp: " + temp + " Value: " + value);
+
+        return temp + "";
     }
 
 }

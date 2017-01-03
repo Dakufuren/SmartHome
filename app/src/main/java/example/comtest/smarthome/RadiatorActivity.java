@@ -19,6 +19,7 @@ public class RadiatorActivity extends AppCompatActivity {
     private SeekBar RedBar;
     private TextView degreesTV;
     private Button submitButton;
+    private requestToApi rta;
 
 
     private int progressHolder;
@@ -27,6 +28,8 @@ public class RadiatorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_radiator);
+
+        rta = new requestToApi(getApplicationContext());
 
         RedBar = (SeekBar) findViewById(R.id.seekBar2);
         degreesTV = (TextView) findViewById(R.id.displayDegrees);
@@ -51,8 +54,13 @@ public class RadiatorActivity extends AppCompatActivity {
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            DataStorage.getInstance().setRadiatorTemparature(progressHolder);
+            //DataStorage.getInstance().setRadiatorTemparature(progressHolder);
 
+                if(DataStorage.getInstance().getAtticOrRadiator().equalsIgnoreCase("Attic")) {
+                    rta.setAtticTemp(DataStorage.getInstance().getTempSensorId(), "" + progressHolder);
+                }else if(DataStorage.getInstance().getAtticOrRadiator().equalsIgnoreCase("Radiator")){
+                    rta.setRadiatorTemp(DataStorage.getInstance().getTempSensorId(), "" + progressHolder);
+                }
             finish();
             }
         });

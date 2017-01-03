@@ -2,6 +2,7 @@ package example.comtest.smarthome;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    requestToApi rta;
 
     public static final String PREFS = "SmartHousePrefs";
     ImageAdapter adapter;
@@ -56,9 +59,10 @@ public class MainActivity extends AppCompatActivity {
 
         //For testing remove when done
         DataStorage.getInstance().setUserId("3");
+        DataStorage.getInstance().setChosenHouseId("3");
 
 
-        requestToApi rta = new requestToApi(getApplicationContext());
+        rta = new requestToApi(getApplicationContext());
         rta.getAllHousesFromUser();  //Denna fixar biffen med att hämta info från hemservern med all info, och då menar jag ALLT. Även Stefan Löfvens hemligheter
 
 
@@ -82,13 +86,13 @@ public class MainActivity extends AppCompatActivity {
                 if(position == gridButtonArrayList.get(0).getCurrentPosition()){
                     Toast.makeText(MainActivity.this, "Lamp 1: " + LAMP_ONOFF, Toast.LENGTH_SHORT).show();
                     if(LAMP_ONOFF == false){
-                        apiResponse = rta.postToServer("260001", "1", "1");
+                        //apiResponse = rta.postToServer("260001", "1", "1");
                         createImage(gridview,"lamp_on", position);
                         LAMP_ONOFF = true;
                         NotificationHandler not = new NotificationHandler(getApplicationContext(), 0, "titel", "HejVärld");
                     }
                     else{
-                        apiResponse = rta.postToServer("260000", "1", "1");
+                       // apiResponse = rta.postToServer("260000", "1", "1");
                         createImage(gridview,"lamp_off", position);
                         LAMP_ONOFF = false;
                     }
@@ -122,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 else if(position == gridButtonArrayList.get(3).getCurrentPosition()){
                     View viewItem = gridview.getChildAt(position);
                     if (viewItem != null) {
-                        test();
+
                     }
                 }
                 else if(position == gridButtonArrayList.get(4).getCurrentPosition()){
@@ -151,7 +155,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void test(){
+    private void chooseTemperatureAct(String sensorId){
+        if(sensorId.equalsIgnoreCase("roomtemp")) {
+            DataStorage.getInstance().setAtticOrRadiator("Radiator");
+        }else if(sensorId.equalsIgnoreCase("attictemp")){
+            DataStorage.getInstance().setAtticOrRadiator("Attic");
+        }
         Intent myIntent = new Intent(MainActivity.this, RadiatorActivity.class);
         startActivity(myIntent);
     }
@@ -223,5 +232,9 @@ public class MainActivity extends AppCompatActivity {
         gridView.invalidateViews();
         gridView.setAdapter(adapter);
     }
+
+
+
+
 
 }

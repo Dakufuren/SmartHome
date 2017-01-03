@@ -31,12 +31,13 @@ import static android.R.attr.category;
  */
 public class requestToApi {
 
+    boolean[] checkIfDone = {false, false, false, false};
     String responsePost;
     private RequestQueue requestQueue;
     private StringRequest request;
     private JsonObjectRequest request2;
     private JsonObjectRequest getRequest;
-    private static String URL = "http://smarthomeinterface.azurewebsites.net/home/3";
+    private static String URL = "http://smarthomeinterface.azurewebsites.net/home/";
     Context context;
 
     public requestToApi(Context context) {
@@ -44,7 +45,7 @@ public class requestToApi {
 
     }
 
-    public String postToServer(final String commandId, final String sensorId, final String userId){
+    public String postToServer(final String commandId, final String sensorId, final String userId, final String homeId){
         requestQueue = Volley.newRequestQueue(context);
 
         JSONObject infoSent = new JSONObject();
@@ -57,7 +58,7 @@ public class requestToApi {
         }
 
         request2 = new JsonObjectRequest(
-                Request.Method.POST,URL, infoSent,
+                Request.Method.POST,URL + "homeId", infoSent,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -96,7 +97,7 @@ public class requestToApi {
         return responsePost;
     }
 
-    public String getFromServer(final String commandId, final String sensorId, final String userId){
+    public String getSensorInformation(final String commandId, final String sensorId, final String userId, final String homeId){
         requestQueue = Volley.newRequestQueue(context);
 
         java.net.URL url = null;
@@ -105,7 +106,7 @@ public class requestToApi {
                 "&userId=" + userId +
                 "&unitChannel=" + "hkr_channel_unit";
         try {
-            url = new URL("http", "smarthomeinterface.azurewebsites.net", "home/1" + query);
+            url = new URL("http", "smarthomeinterface.azurewebsites.net", "home/" + homeId + query);
         } catch (MalformedURLException ex) {
             ex.printStackTrace();
             System.out.println("Error in requests API1");
@@ -220,6 +221,9 @@ public class requestToApi {
                             }
 
                         }
+                        //System.out.println("wwwooowwwooeeoeoeoe");
+                        checkIfDone[0] = true;
+                        //getStateOfAllSensors(DataStorage.getInstance().getChosenHouseId());
                     }
                 }, new Response.ErrorListener() {
 
@@ -265,6 +269,9 @@ public class requestToApi {
                                 System.out.println("Error in requests API2");
                             }
 
+                        }
+                        if(checkIfDone[0] == true) {
+                            checkIfDone[1] = true;
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -313,6 +320,9 @@ public class requestToApi {
                             }
 
                         }
+                        if(checkIfDone[1] == true) {
+                            checkIfDone[2] = true;
+                        }
                     }
                 }, new Response.ErrorListener() {
 
@@ -358,6 +368,13 @@ public class requestToApi {
                             }
 
                         }
+                        if(checkIfDone[2] == true) {
+                            checkIfDone[3] = true;
+                        }
+                        if(checkIfDone[3] == true){
+                            System.out.println("maaaaaaaaaaaaaajjjjjssss");
+                            getStateOfAllSensors(DataStorage.getInstance().getChosenHouseId());
+                        }
                     }
                 }, new Response.ErrorListener() {
 
@@ -372,4 +389,109 @@ public class requestToApi {
 
         return responsePost;
     }
+
+    public void getStateOfAllSensors(String homeServerId){
+        for(RoomInfo room : DataStorage.getInstance().getRoomList()){
+            if(room.getHomeServerId().equalsIgnoreCase(homeServerId)){
+                for(DeviceInfo device : DataStorage.getInstance().getDeviceList()){
+                    if(room.getId().equalsIgnoreCase(device.getRoomId())){
+                        for(SensorInfo sensor : DataStorage.getInstance().getSensorList()){
+                            if(device.getId().equalsIgnoreCase(sensor.getDeviceId())){
+                                String command = getCorrectReadCommand(sensor.getType());
+                                System.out.println("Method: getStateOfAllSensors. Sending GET");
+                                getSensorInformation(command, sensor.getId(), DataStorage.getInstance().getUserId(), room.getHomeServerId());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private String getCorrectReadCommand(String sensorType){
+        String command = "";
+        if(sensorType.equalsIgnoreCase("attic")){
+            command = "11000";
+        } else if(sensorType.equalsIgnoreCase("roomtemp")){
+            command = "12000";
+        } else if(sensorType.equalsIgnoreCase("outdoortemp")){
+            command = "13000";
+        } else if(sensorType.equalsIgnoreCase("power")){
+            command = "14000";
+        } else if(sensorType.equalsIgnoreCase("burglaralarm")){
+            command = "16000";
+        } else if(sensorType.equalsIgnoreCase("stove")){
+            command = "18000";
+        } else if(sensorType.equalsIgnoreCase("window")){
+            command = "19000";
+        } else if(sensorType.equalsIgnoreCase("atticfan")){
+            command = "22000";
+        } else if(sensorType.equalsIgnoreCase("lamp")){
+            command = "25000";
+        } else if(sensorType.equalsIgnoreCase("outdoorlight")){
+            command = "27000";
+        }
+        return command;
+    }
+
+    private String getCorrectPOSTCommand(String sensorType){
+        String command = "";
+        if(sensorType.equalsIgnoreCase("burglar")){
+            command = "17000";
+        } else if(sensorType.equalsIgnoreCase("atticfan")){
+            command = "23000";
+        } else if(sensorType.equalsIgnoreCase("indoorlight")){
+            command = "26000";
+        } else if(sensorType.equalsIgnoreCase("outdoorlight")){
+            command = "28000";
+        }
+        return command;
+    }
+
+    public void setAtticTemp(String sensorId, String value){
+        int dataValue = ((Integer.parseInt(value)/5)/100) * 1024;
+        System.out.println("setAtticTemp, dataValue = " + dataValue);
+        String dataValueString = "" + dataValue;
+        String addZeros = "";
+        if(dataValueString.length() < 4){
+            int loops = 4 - dataValueString.length();
+
+            for(int i = 0; i < loops; i++ ){
+                addZeros += "0";
+            }
+        }
+        postToServer("11100" + addZeros + dataValueString , sensorId, DataStorage.getInstance().getUserId(), DataStorage.getInstance().getChosenHouseId() );
+    }
+
+    public void setRadiatorTemp(String sensorId, String value){
+        int dataValue = ((Integer.parseInt(value)/5)/100) * 1024;
+        System.out.println("setAtticTemp, dataValue = " + dataValue);
+        String dataValueString = "" + dataValue;
+        String addZeros = "";
+        if(dataValueString.length() < 4){
+            int loops = 4 - dataValueString.length();
+
+            for(int i = 0; i < loops; i++ ){
+                addZeros += "0";
+            }
+        }
+        postToServer("12200" + addZeros + dataValueString , sensorId, DataStorage.getInstance().getUserId(), DataStorage.getInstance().getChosenHouseId() );
+    }
+
+    public void setStateOfSensor(String sensorId){
+        String command = "";
+        String value = "";
+        for(SensorInfo sensor : DataStorage.getInstance().getSensorList()){
+            if(sensor.getId().equalsIgnoreCase(sensorId)){
+                command = getCorrectPOSTCommand(sensor.getType());
+                if(sensor.getValue().equalsIgnoreCase("0")){
+                    value = "1";
+                }else if(sensor.getValue().equalsIgnoreCase("1")){
+                    value = "0";
+                }
+            }
+        }
+        postToServer(command+ "000" + value , sensorId, DataStorage.getInstance().getUserId(), DataStorage.getInstance().getChosenHouseId() );
+    }
+
 }

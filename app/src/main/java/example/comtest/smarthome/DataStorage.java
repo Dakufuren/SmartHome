@@ -10,7 +10,19 @@ public class DataStorage {
 
     private static DataStorage dataStorage;
     private int radiatorTemparature;  //used for the radiator part
+    private String tempSensorId; //used in the radiatorActivity
+    private String chosenHouseId;
     private String userId;
+
+    public String getAtticOrRadiator() {
+        return atticOrRadiator;
+    }
+
+    public void setAtticOrRadiator(String atticOrRadiator) {
+        this.atticOrRadiator = atticOrRadiator;
+    }
+
+    private String atticOrRadiator;
     private boolean firstStart = true;
     private boolean[] buttonBooleanArray;
 
@@ -94,4 +106,19 @@ public class DataStorage {
         sensorList.add(new SensorInfo(name, id, type, deviceId, value));
     }
 
+    public String getTempSensorId() {
+        return tempSensorId;
+    }
+
+    public void setTempSensorId(String tempSensorId) {
+        this.tempSensorId = tempSensorId;
+    }
+
+    public String getChosenHouseId() {
+        return chosenHouseId;
+    }
+
+    public void setChosenHouseId(String chosenHouseId) {
+        this.chosenHouseId = chosenHouseId;
+    }
 }
