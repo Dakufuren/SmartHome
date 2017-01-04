@@ -11,6 +11,9 @@ public class SensorInfo {
     private String deviceId;
     private String value;
 
+    public static final String sensorTypes = "window,outdoorLamp";
+
+
     public SensorInfo(String name, String id, String type, String deviceId, String value) {
         this.name = name;
         this.id = id;
@@ -58,4 +61,56 @@ public class SensorInfo {
     public void setValue(String value) {
         this.value = value;
     }
+
+
+    public int getDrawable() {
+
+        switch (this.type) {
+            case "window":
+                if(value=="0"){
+                    return R.drawable.window_closed;
+                }
+                else if(value=="1"){
+                    return R.drawable.window_open;
+                }
+            case "outdoorLamp":
+                if(value=="0"){
+                    return R.drawable.outdoor_lamp_off;
+                }
+                else if(value=="1"){
+                    return R.drawable.outdoor_lamp_on;
+                }
+            case "indoorLamp":
+                if(value=="0"){
+                    return R.drawable.indoor_lamp_off;
+                }
+                else if(value=="1"){
+                    return R.drawable.indoor_lamp_on;
+                }
+            case "atticFan":
+                return  R.drawable.attic_fan;
+            case "stove":
+                if(value=="0"){
+                    return R.drawable.stove_off;
+                }
+                else if(value=="1"){
+                    return R.drawable.stove_on;
+                }
+            case "atticTemp":
+                    return R.drawable.temperature;
+            case "roomTemp":
+                return R.drawable.temperature;
+            case "alarm":
+                return R.drawable.burglar;
+            case "outdoorTemp":
+                return R.drawable.outdoor_temp;
+            case "powerConsumtion":
+                return R.drawable.power;
+            default:
+                return R.drawable.attic;
+
+        }
+    }
+
 }
+

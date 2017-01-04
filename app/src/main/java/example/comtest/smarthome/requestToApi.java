@@ -1,8 +1,6 @@
 package example.comtest.smarthome;
 
 import android.content.Context;
-import android.provider.ContactsContract;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -24,8 +22,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.R.attr.category;
-
 /**
  * Created by bumblebee on 2016-10-03.
  */
@@ -39,10 +35,15 @@ public class requestToApi {
     private JsonObjectRequest getRequest;
     private static String URL = "http://smarthomeinterface.azurewebsites.net/home/";
     Context context;
+    MainActivity mainActivity;
 
     public requestToApi(Context context) {
         this.context = context;
+    }
 
+    public requestToApi(Context context, MainActivity mainActivity) {
+        this.context = context;
+        this.mainActivity = mainActivity;
     }
 
     public String postToServer(final String commandId, final String sensorId, final String userId, final String homeId){
@@ -374,6 +375,11 @@ public class requestToApi {
                         if(checkIfDone[3] == true){
                             System.out.println("maaaaaaaaaaaaaajjjjjssss");
                             getStateOfAllSensors(DataStorage.getInstance().getChosenHouseId());
+                            if(mainActivity != null){
+                                mainActivity.gridViewUpdaterVersionTwo(mainActivity.gridview);
+                            }
+
+
                         }
                     }
                 }, new Response.ErrorListener() {

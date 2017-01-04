@@ -14,21 +14,26 @@ public class ChooseHouseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_house);
-        testFillHouseArray();
+      //  testFillHouseArray();
         setListView();
     }
     private void setListView(){
+        for(int i=0;i<DataStorage.getInstance().getHomeServerList().size();i++){
+            houses.add(DataStorage.getInstance().getHomeServerList().get(i).getName());
+        }
+
         HouseAdapter houseAdapter = new HouseAdapter(getApplicationContext(),houses);
         ListView houseListView = (ListView) findViewById(R.id.houseList);
         houseListView.setAdapter(houseAdapter);
         houseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                testBooleanArraySetter();
-                DataStorage.getInstance().setFirstStart(false);
+
             }
         });
     }
+
+
 
     private void testFillHouseArray(){ //For test purpose.
         houses.add(" 1");
