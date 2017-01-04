@@ -90,12 +90,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Lamp 1: " + LAMP_ONOFF, Toast.LENGTH_SHORT).show();
                 if (LAMP_ONOFF == false) {
                     //apiResponse = rta.postToServer("260001", "1", "1");
-                    createImage(gridview, "lamp_on", position);
+                    createImage(gridview, "outdoor_lamp_on", position);
                     LAMP_ONOFF = true;
                     NotificationHandler not = new NotificationHandler(getApplicationContext(), 0, "titel", "HejVärld");
                 } else {
                     // apiResponse = rta.postToServer("260000", "1", "1");
-                    createImage(gridview, "lamp_off", position);
+                    createImage(gridview, "outdoor_lamp_off", position);
                     LAMP_ONOFF = false;
                 }
                     break;
@@ -104,10 +104,10 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Lamp 2: " + LAMP_ONOFF2,
                             Toast.LENGTH_SHORT).show();
                     if (LAMP_ONOFF2 == false) {
-                        createImage(gridview, "lamp_on2", position);
+                        createImage(gridview, "indoor_lamp_on", position);
                         LAMP_ONOFF2 = true;
                     } else {
-                        createImage(gridview, "lamp_off2", position);
+                        createImage(gridview, "indoor_lamp_off", position);
                         LAMP_ONOFF2 = false;
                     }
                     break;
