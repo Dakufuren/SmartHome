@@ -404,7 +404,7 @@ public class requestToApi {
                         for(SensorInfo sensor : DataStorage.getInstance().getSensorList()){
                             if(device.getId().equalsIgnoreCase(sensor.getDeviceId())){
                                 String command = getCorrectReadCommand(sensor.getType());
-                                System.out.println("Method: getStateOfAllSensors. Sending GET");
+                                System.out.println("Method: getStateOfAllSensors. Sending GET, SensorId: " + sensor.getType() );
                                 getSensorInformation(command, sensor.getId(), DataStorage.getInstance().getUserId(), room.getHomeServerId());
                             }
                         }
@@ -416,39 +416,39 @@ public class requestToApi {
 
     private String getCorrectReadCommand(String sensorType){
         String command = "";
-        if(sensorType.equalsIgnoreCase("attic")){
-            command = "11000";
+        if(sensorType.equalsIgnoreCase("attictemp")){
+            command = "110000000";
         } else if(sensorType.equalsIgnoreCase("roomtemp")){
-            command = "12000";
+            command = "120000000";
         } else if(sensorType.equalsIgnoreCase("outdoortemp")){
-            command = "13000";
-        } else if(sensorType.equalsIgnoreCase("power")){
-            command = "14000";
-        } else if(sensorType.equalsIgnoreCase("burglaralarm")){
-            command = "16000";
+            command = "130000000";
+        } else if(sensorType.equalsIgnoreCase("powerconsumption")){
+            command = "140000000";
+        } else if(sensorType.equalsIgnoreCase("alarm")){
+            command = "160000000";
         } else if(sensorType.equalsIgnoreCase("stove")){
-            command = "18000";
+            command = "180000000";
         } else if(sensorType.equalsIgnoreCase("window")){
-            command = "19000";
+            command = "190000000";
         } else if(sensorType.equalsIgnoreCase("atticfan")){
-            command = "22000";
-        } else if(sensorType.equalsIgnoreCase("lamp")){
-            command = "25000";
-        } else if(sensorType.equalsIgnoreCase("outdoorlight")){
-            command = "27000";
+            command = "220000000";
+        } else if(sensorType.equalsIgnoreCase("indoorlamp")){
+            command = "250000000";
+        } else if(sensorType.equalsIgnoreCase("outdoorlamp")){
+            command = "270000000";
         }
         return command;
     }
 
     private String getCorrectPOSTCommand(String sensorType){
         String command = "";
-        if(sensorType.equalsIgnoreCase("burglar")){
+        if(sensorType.equalsIgnoreCase("alarm")){
             command = "17000";
         } else if(sensorType.equalsIgnoreCase("atticfan")){
             command = "23000";
-        } else if(sensorType.equalsIgnoreCase("indoorlight")){
+        } else if(sensorType.equalsIgnoreCase("indoorlamp")){
             command = "26000";
-        } else if(sensorType.equalsIgnoreCase("outdoorlight")){
+        } else if(sensorType.equalsIgnoreCase("outdoorlamp")){
             command = "28000";
         }
         return command;
