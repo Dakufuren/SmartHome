@@ -14,7 +14,6 @@ public class ChooseHouseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_house);
-      //  testFillHouseArray();
         setListView();
     }
     private void setListView(){
@@ -28,10 +27,9 @@ public class ChooseHouseActivity extends AppCompatActivity {
         houseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                DataStorage.getInstance().setFirstStart(false);
                 DataStorage.getInstance().setChosenHouseId(String.valueOf(DataStorage.getInstance().getHomeServerList().get(position).getId()));
-                System.out.println("New house picked:   " + DataStorage.getInstance().getHomeServerList().get(position).getName());
-                requestToApi requestToApi = new requestToApi(getApplicationContext());
-                requestToApi.getAllRoomsFromHouse((DataStorage.getInstance().getHomeServerList().get(position).getId()));
+                System.out.println("New house picked:   " + DataStorage.getInstance().getHomeServerList().get(position).getName() + "   ___Id is:    " + String.valueOf(DataStorage.getInstance().getHomeServerList().get(position).getId()));
             }
         });
     }

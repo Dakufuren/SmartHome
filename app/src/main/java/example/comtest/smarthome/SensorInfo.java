@@ -10,16 +10,18 @@ public class SensorInfo {
     private String type;
     private String deviceId;
     private String value;
+    private String houseId;
 
     public static final String sensorTypes = "window,outdoorLamp";
 
 
-    public SensorInfo(String name, String id, String type, String deviceId, String value) {
+    public SensorInfo(String name, String id, String type, String deviceId, String value, String houseId) {
         this.name = name;
         this.id = id;
         this.type = type;
         this.deviceId = deviceId;
         this.value = value;
+        this.houseId = houseId;
     }
 
     public String getName() {
@@ -106,11 +108,20 @@ public class SensorInfo {
                 return R.drawable.outdoor_temp;
             case "powerConsumtion":
                 return R.drawable.power;
+            case "House":
+                return R.drawable.house;
             default:
                 return R.drawable.attic;
 
         }
     }
 
+    public String getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(String houseId) {
+        this.houseId = houseId;
+    }
 }
 

@@ -24,7 +24,6 @@ public class DataStorage {
 
     private String atticOrRadiator;
     private boolean firstStart = true;
-    private boolean[] buttonBooleanArray;
 
     private ArrayList<HomeServer> homeServerList = new ArrayList<>();
     private ArrayList<RoomInfo> roomList = new ArrayList<>();
@@ -56,14 +55,6 @@ public class DataStorage {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public boolean[] getButtonBooleanArray() {
-        return buttonBooleanArray;
-    }
-
-    public void setButtonBooleanArray(boolean[] butonBooleanArray) {
-        this.buttonBooleanArray = butonBooleanArray;
     }
 
     public boolean isFirstStart() {
@@ -102,8 +93,8 @@ public class DataStorage {
         deviceList.add(new DeviceInfo(name, id, roomId));
     }
 
-    public void addSensorToList(String name, String id, String type, String deviceId, String value ) {
-        sensorList.add(new SensorInfo(name, id, type, deviceId, value));
+    public void addSensorToList(String name, String id, String type, String deviceId, String value,String houseId ) {
+        sensorList.add(new SensorInfo(name, id, type, deviceId, value,houseId));
     }
 
     public String getTempSensorId() {

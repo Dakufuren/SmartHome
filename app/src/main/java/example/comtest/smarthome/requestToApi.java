@@ -264,7 +264,7 @@ public class requestToApi {
                                 JSONObject jo = response.getJSONObject(i);
                                 System.out.println("JSON OBJECTET I ARRAYN" + jo.toString());
                                 DataStorage.getInstance().addRoomToList(jo.get("Room_name").toString(), jo.get("Room_id").toString(), homeserverId);
-                                getAllDevicesFromRoom(jo.getString("Room_id"));
+                                getAllDevicesFromRoom(jo.getString("Room_id"),homeserverId);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 System.out.println("Error in requests API2");
@@ -290,7 +290,7 @@ public class requestToApi {
         return responsePost;
     }
 
-    public String getAllDevicesFromRoom(final String roomId){
+    public String getAllDevicesFromRoom(final String roomId, final String homeServerID){
         requestQueue = Volley.newRequestQueue(context);
         System.out.println("TESTING:   getFromServerTEST1");
         java.net.URL url = null;
@@ -313,7 +313,7 @@ public class requestToApi {
                                 JSONObject jo = response.getJSONObject(i);
                                 System.out.println("JSON OBJECTET I ARRAYN" + jo.toString());
                                 DataStorage.getInstance().addDeviceToList(jo.get("Device_name").toString(), jo.get("Device_id").toString(), roomId);
-                                getAllSensorsFromDevice(jo.getString("Device_id"));
+                                getAllSensorsFromDevice(jo.getString("Device_id"), homeServerID);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -339,7 +339,7 @@ public class requestToApi {
         return responsePost;
     }
 
-    public String getAllSensorsFromDevice(final String deviceId){
+    public String getAllSensorsFromDevice(final String deviceId, final String homeServerId){
         requestQueue = Volley.newRequestQueue(context);
         System.out.println("TESTING:   getFromServerTEST1");
         java.net.URL url = null;
@@ -356,12 +356,14 @@ public class requestToApi {
                     @Override
                     public void onResponse(JSONArray response) {
                         System.out.println("SUCCESSFULL RESPONSE FROM HOMESERVER");
+
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 // Get the json object and display it
                                 JSONObject jo = response.getJSONObject(i);
                                 System.out.println("JSON OBJECTET I ARRAYN222" + jo.toString());
-                                DataStorage.getInstance().addSensorToList(jo.get("Sensor_name").toString(), jo.getString("Sensor_id").toString(), jo.getString("Sensor_type").toString(), deviceId, "0");
+                                System.out.println("house id for sensor:  " +jo.get("Sensor_name").toString() + "   id:   " +homeServerId);
+                                DataStorage.getInstance().addSensorToList(jo.get("Sensor_name").toString(), jo.getString("Sensor_id").toString(), jo.getString("Sensor_type").toString(), deviceId, "0",homeServerId);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -376,11 +378,12 @@ public class requestToApi {
                             System.out.println("maaaaaaaaaaaaaajjjjjssss");
                             getStateOfAllSensors(DataStorage.getInstance().getChosenHouseId());
                             if(mainActivity != null){
+
                                 mainActivity.gridViewUpdaterVersionTwo(mainActivity.gridview);
+                                System.out.println("Updated gridview with:  " + DataStorage.getInstance().getChosenHouseId());
                             }
-
-
                         }
+
                     }
                 }, new Response.ErrorListener() {
 

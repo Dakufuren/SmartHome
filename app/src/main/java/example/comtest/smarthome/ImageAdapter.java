@@ -13,18 +13,18 @@ import android.widget.TextView;
  */
 
 public class ImageAdapter extends BaseAdapter {
-    private Context mContext;
     private static LayoutInflater inflater = null;
-    private Integer[] buttons;
+    private Integer[] mThumbIds;
+    private String[] mThumbTexts;
 
-    public ImageAdapter(Context c, Integer[] buttonsToShow) {
-        buttons = buttonsToShow;
-        mContext = c;
-        inflater = ( LayoutInflater )mContext.
+    public ImageAdapter(Context context,Integer[] mThumbIds,String[] mThumbTexts) {
+        this.mThumbIds = mThumbIds;
+        this.mThumbTexts = mThumbTexts;
+        inflater = ( LayoutInflater )context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-    }public class Holder
-    {
+    }
+    public class Holder {
         TextView tv;
         ImageView img;
     }
@@ -57,24 +57,6 @@ public class ImageAdapter extends BaseAdapter {
         holder.img.setImageResource(mThumbIds[position]);
 
         return rowView;
-    }
-
-    // references to our images
-    private Integer[] mThumbIds = {
-
-
-    };
-
-    // references to our texts
-    private String[] mThumbTexts = {
-
-
-    };
-    public void setMThumbIds(Integer [] setItems){
-        mThumbIds = setItems;
-    }
-    public void setMThumbTexts(String [] setItems){
-        mThumbTexts = setItems;
     }
 
 }
