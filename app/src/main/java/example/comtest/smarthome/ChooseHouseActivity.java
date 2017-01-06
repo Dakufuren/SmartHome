@@ -28,28 +28,11 @@ public class ChooseHouseActivity extends AppCompatActivity {
         houseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
+                DataStorage.getInstance().setChosenHouseId(String.valueOf(DataStorage.getInstance().getHomeServerList().get(position).getId()));
+                System.out.println("New house picked:   " + DataStorage.getInstance().getHomeServerList().get(position).getName());
+                requestToApi requestToApi = new requestToApi(getApplicationContext());
+                requestToApi.getAllRoomsFromHouse((DataStorage.getInstance().getHomeServerList().get(position).getId()));
             }
         });
     }
-
-
-
-    private void testFillHouseArray(){ //For test purpose.
-        houses.add(" 1");
-        houses.add(" 2");
-        houses.add(" 3");
-        houses.add(" 4");
-        houses.add(" 5");
-    }
-    private void testBooleanArraySetter(){ //For test purpose
-        boolean[] butonBooleanArray = new boolean[5];
-        butonBooleanArray[0] = true;
-        butonBooleanArray[1] = false;
-        butonBooleanArray[2] = false;
-        butonBooleanArray[3] = true;
-        butonBooleanArray[4] = true;
-        DataStorage.getInstance().setButtonBooleanArray(butonBooleanArray);
-    }
-
 }

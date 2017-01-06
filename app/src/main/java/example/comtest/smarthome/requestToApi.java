@@ -466,11 +466,16 @@ public class requestToApi {
                 addZeros += "0";
             }
         }
+        System.out.println("ADDZEROS  " + addZeros);
         postToServer("11100" + addZeros + dataValueString , sensorId, DataStorage.getInstance().getUserId(), DataStorage.getInstance().getChosenHouseId() );
     }
 
     public void setRadiatorTemp(String sensorId, String value){
-        int dataValue = ((Integer.parseInt(value)/5)/100) * 1024;
+        System.out.println("valuuueeee  " + value);
+        int skit = Integer.parseInt(value);
+        System.out.println(skit);
+        int dataValue = skit  * 1024 /5/100;
+        System.out.println("dataValuueeeee   "  + dataValue);
         System.out.println("setAtticTemp, dataValue = " + dataValue);
         String dataValueString = "" + dataValue;
         String addZeros = "";
@@ -481,6 +486,7 @@ public class requestToApi {
                 addZeros += "0";
             }
         }
+        System.out.println("ADDZEROS  " + addZeros + "dataValuee: "+ dataValueString);
         postToServer("12200" + addZeros + dataValueString , sensorId, DataStorage.getInstance().getUserId(), DataStorage.getInstance().getChosenHouseId() );
     }
 

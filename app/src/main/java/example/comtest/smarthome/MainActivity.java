@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        DataStorage.getInstance().addSensorToList("House","0","House","0","0");
         //populateGridButtons();
 
         RecievePubNub.getInstance().setContext(getApplicationContext());
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("Type in click:  " + sensor.getType());
                 switch (sensor.getType()) {
                 case "window":
-
+                    break;
                 case "outdoorLamp":
                 Toast.makeText(MainActivity.this, "Lamp 1: " + LAMP_ONOFF, Toast.LENGTH_SHORT).show();
                 if (LAMP_ONOFF == false) {
@@ -114,11 +114,11 @@ public class MainActivity extends AppCompatActivity {
                 case "atticFan":
                     break;
                 case "stove":
+                    chooseTemperatureAct("roomTemp");
                     break;
                 case "atticTemp":
                     break;
                 case "roomTemp":
-                    System.out.println("case room temp");
                     Toast.makeText(MainActivity.this, "Temperature", Toast.LENGTH_SHORT).show();
                     View viewItem = gridview.getChildAt(position);
                     if (viewItem != null) {
@@ -129,9 +129,18 @@ public class MainActivity extends AppCompatActivity {
                 case "alarm":
                     break;
                 case "outdoorTemp":
+                    Toast.makeText(MainActivity.this, "Temperature", Toast.LENGTH_SHORT).show();
+                    viewItem = gridview.getChildAt(position);
+                    if (viewItem != null) {
+                        TextView textview = (TextView) viewItem.findViewById(R.id.textView1);
+                        textview.setText("28 degrees");
+                    }
                     break;
                 case "powerConsumtion":
                     break;
+                    case "House":
+                        openHouseActivity();
+                        break;
                 default:
 
 
@@ -215,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(myIntent);
     }
 
-    private void testHouseActivity() {
+    private void openHouseActivity() {
         Intent myIntent = new Intent(MainActivity.this, ChooseHouseActivity.class);
         startActivity(myIntent);
     }
@@ -251,6 +260,14 @@ public class MainActivity extends AppCompatActivity {
                 mThumbTextLocal[i] = sensorListLocal.get(i).getValue();
             }
         }
+
+        //For house activity button
+        mThumbTextLocal[mThumbTextLocal.length-1] ="";
+        mThumbIdsLocal[mThumbIdsLocal.length-1] = R.drawable.house;
+
+
+
+
             adapter.setMThumbIds(mThumbIdsLocal);
             adapter.setMThumbTexts(mThumbTextLocal);
             adapter.notifyDataSetChanged();
