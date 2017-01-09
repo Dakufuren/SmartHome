@@ -379,7 +379,7 @@ public class requestToApi {
                             getStateOfAllSensors(DataStorage.getInstance().getChosenHouseId());
                             if(mainActivity != null){
 
-                                mainActivity.gridViewUpdaterVersionTwo(mainActivity.gridview);
+                                mainActivity.gridViewUpdaterVersion(mainActivity.gridview);
                                 System.out.println("Updated gridview with:  " + DataStorage.getInstance().getChosenHouseId());
                             }
                         }
