@@ -379,7 +379,7 @@ public class requestToApi {
                             getStateOfAllSensors(DataStorage.getInstance().getChosenHouseId());
                             if(mainActivity != null){
 
-                                mainActivity.gridViewUpdaterVersion(mainActivity.gridview);
+                                mainActivity.gridViewUpdater(mainActivity.gridview);
                                 System.out.println("Updated gridview with:  " + DataStorage.getInstance().getChosenHouseId());
                             }
                         }
@@ -409,6 +409,11 @@ public class requestToApi {
                                 String command = getCorrectReadCommand(sensor.getType());
                                 System.out.println("Method: getStateOfAllSensors. Sending GET, SensorId: " + sensor.getType() );
                                 getSensorInformation(command, sensor.getId(), DataStorage.getInstance().getUserId(), room.getHomeServerId());
+                                try {
+                                    Thread.sleep(100);
+                                }catch(Exception e){
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }
@@ -453,14 +458,16 @@ public class requestToApi {
             command = "26000";
         } else if(sensorType.equalsIgnoreCase("outdoorlamp")){
             command = "28000";
+        } else if(sensorType.equalsIgnoreCase("alarm")){
+            command = "17000";
         }
         return command;
     }
 
     public void setAtticTemp(String sensorId, String value){
-        int dataValue = ((Integer.parseInt(value)/5)/100) * 1024;
-        System.out.println("setAtticTemp, dataValue = " + dataValue);
-        String dataValueString = "" + dataValue;
+        double dataValue = ((Integer.parseInt(value)/5)/100) * 1024;
+        System.out.println("setAtticTemp, dataValue = " + (int) dataValue);
+        String dataValueString = "" + (int) dataValue;
         String addZeros = "";
         if(dataValueString.length() < 4){
             int loops = 4 - dataValueString.length();
@@ -475,12 +482,11 @@ public class requestToApi {
 
     public void setRadiatorTemp(String sensorId, String value){
         System.out.println("valuuueeee  " + value);
-        int skit = Integer.parseInt(value);
-        System.out.println(skit);
-        int dataValue = skit  * 1024 /5/100;
-        System.out.println("dataValuueeeee   "  + dataValue);
+
+        double dataValue = Integer.parseInt(value)  * 1024 /5/100;
+        System.out.println("dataValuueeeee   "  + (int) dataValue);
         System.out.println("setAtticTemp, dataValue = " + dataValue);
-        String dataValueString = "" + dataValue;
+        String dataValueString = "" +  (int) dataValue;
         String addZeros = "";
         if(dataValueString.length() < 4){
             int loops = 4 - dataValueString.length();
@@ -496,9 +502,12 @@ public class requestToApi {
     public void setStateOfSensor(String sensorId){
         String command = "";
         String value = "";
+        System.out.println("Sensor id:   " + sensorId);
         for(SensorInfo sensor : DataStorage.getInstance().getSensorList()){
             if(sensor.getId().equalsIgnoreCase(sensorId)){
+                System.out.println("Sätter command   ");
                 command = getCorrectPOSTCommand(sensor.getType());
+                System.out.println("Command:   " +command);
                 if(sensor.getValue().equalsIgnoreCase("0")){
                     value = "1";
                 }else if(sensor.getValue().equalsIgnoreCase("1")){

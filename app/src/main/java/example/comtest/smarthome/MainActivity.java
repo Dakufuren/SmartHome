@@ -48,33 +48,56 @@ public class MainActivity extends AppCompatActivity {
         gridview = (GridView) findViewById(R.id.gridview);
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-
+                System.out.println("All sensors:   " + DataStorage.getInstance().getSensorList().size());
                 //requestToApi rta = new requestToApi(getApplicationContext(), this);
                 SensorInfo sensor = DataStorage.getInstance().getSensorList().get(position);
                 switch (sensor.getType()) {
                     case "window":
-                        changeSensorState(sensor, position, "window_open", "window_closed", true);
+                        if (sensor.getValue() == "1") {
+                            System.out.println("Window is open!!!");
+                            createImage(gridview, "window_open", position);
+                            openTextViewAndToast(position, "1", "window");
+                        } else {
+                            System.out.println("Window is closed!!!");
+                            createImage(gridview, "window_closed", position);
+                            openTextViewAndToast(position, "0", "window");
+                        }
                         break;
 
                     case "outdoorLamp":
-                        changeSensorState(sensor, position, "outdoor_lamp_on", "outdoor_lamp_off", true);
+                        changeSensorState(sensor, position, "outdoor_lamp_on", "outdoor_lamp_off");
                         break;
 
                     case "indoorLamp":
-                        changeSensorState(sensor, position, "indoor_lamp_on", "indoor_lamp_off", true);
+                        changeSensorState(sensor, position, "indoor_lamp_on", "indoor_lamp_off");
                         break;
 
                     case "atticFan":
-                        changeSensorState(sensor, position, "", "", false);
+                        if(sensor.getValue().equals("0")){
+                            openTextViewAndToast(position, "1", "atticFan");
+                        }
+                        else{
+                            openTextViewAndToast(position,"0", "atticFan");
+                        }
+                        rta.setStateOfSensor(sensor.getId());
                         break;
 
                     case "stove":
-                        changeSensorState(sensor, position, "stove_on", "stove_off", true);
+                        //changeSensorState(sensor, position, "stove_on", "stove_off", true);
+                        System.out.println("Stove value:   " + sensor.getValue());
+                        if (sensor.getValue() == "1") {
+                            openTextViewAndToast(position,"1", "stove");
+                            createImage(gridview, "stove_on", position);
+                        } else {
+                            openTextViewAndToast(position, "0", "stove");
+                            createImage(gridview, "stove_off", position);
+                        }
                         break;
 
                     case "atticTemp":
                         chooseTemperatureAct("atticTemp");
                         // openTextViewAndToast(position, Integer.toString(DataStorage.getInstance().getRadiatorTemparature()), "roomTemp");
+                        //openTextViewAndToast(position, sensor.getValue(), "atticTemp");
                         break;
 
                     case "roomTemp":
@@ -83,8 +106,13 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case "alarm":
-                        changeSensorState(sensor, position, "", "", false);
-                        openTextViewAndToast(position, sensor.getValue(), "alarm");
+                        if(sensor.getValue().equals("0")){
+                            openTextViewAndToast(position, "1", "stove");
+                        }
+                        else{
+                            openTextViewAndToast(position,"0", "stove");
+                        }
+                        rta.setStateOfSensor(sensor.getId());
                         break;
 
                     case "outdoorTemp":
@@ -103,31 +131,27 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            private void openTextViewAndToast(int position, String textViewText, String toastText) {
-                Toast.makeText(MainActivity.this, toastText, Toast.LENGTH_SHORT).show();
-                View viewItem = gridview.getChildAt(position);
-                if (viewItem != null) {
-                    TextView textview = (TextView) viewItem.findViewById(R.id.textView1);
-                    textview.setText(textViewText);
-                }
-            }
+
         });
     }
 
-    private void changeSensorState(SensorInfo sensor, int position, String onDrawableValue, String ofDrawableValue, Boolean imageChangeOnOFF) {
+    private void openTextViewAndToast(int position, String textViewText, String toastText) {
+        Toast.makeText(MainActivity.this, textViewText, Toast.LENGTH_SHORT).show();
+        View viewItem = gridview.getChildAt(position);
+        if (viewItem != null) {
+            TextView textview = (TextView) viewItem.findViewById(R.id.textView1);
+            textview.setText(textViewText);
+        }
+    }
+
+    private void changeSensorState(SensorInfo sensor, int position, String onDrawableValue, String offDrawableValue) {
         if (sensor.getValue().equals("0")) {
-            if (imageChangeOnOFF) {
-                createImage(gridview, onDrawableValue, position);
-            }
-            DataStorage.getInstance().getSensorList().get(position).setValue("1");
+            createImage(gridview, onDrawableValue, position);
 
         } else {
-            if (imageChangeOnOFF) {
-                createImage(gridview, ofDrawableValue, position);
-            }
-            DataStorage.getInstance().getSensorList().get(position).setValue("0");
+            createImage(gridview, offDrawableValue, position);
         }
-        rta.setStateOfSensor(sensor.getType());
+        rta.setStateOfSensor(sensor.getId());
     }
 
 
@@ -135,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {    //On resume lunches on create activity therefore needs to not call grid view change on first set up.
         super.onResume();
         if (DataStorage.getInstance().isFirstStart() == false) {
-            gridViewUpdaterVersion(gridview);
+            gridViewUpdater(gridview);
         }
     }
 
@@ -163,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void gridViewUpdaterVersion(GridView gridView) {
+    public void gridViewUpdater(GridView gridView) {
         ArrayList<SensorInfo> sensorListLocal = new ArrayList<SensorInfo>();
         sensorListLocal = DataStorage.getInstance().getSensorList();
         ArrayList<Integer> mThumbIds = new ArrayList<Integer>();

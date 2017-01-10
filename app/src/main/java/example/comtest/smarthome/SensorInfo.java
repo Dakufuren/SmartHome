@@ -99,7 +99,7 @@ public class SensorInfo {
                     return R.drawable.stove_on;
                 }
             case "atticTemp":
-                    return R.drawable.temperature;
+                    return R.drawable.attic;
             case "roomTemp":
                 return R.drawable.temperature;
             case "alarm":

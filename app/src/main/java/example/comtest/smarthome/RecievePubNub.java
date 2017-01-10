@@ -3,20 +3,16 @@ package example.comtest.smarthome;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.pubnub.api.*;
-
-import org.json.*;
-
-import com.pubnub.api.callbacks.PNCallback;
+import com.pubnub.api.PNConfiguration;
+import com.pubnub.api.PubNub;
 import com.pubnub.api.callbacks.SubscribeCallback;
-import com.pubnub.api.enums.PNStatusCategory;
-import com.pubnub.api.models.consumer.PNPublishResult;
 import com.pubnub.api.models.consumer.PNStatus;
 import com.pubnub.api.models.consumer.pubsub.PNMessageResult;
 import com.pubnub.api.models.consumer.pubsub.PNPresenceEventResult;
 
-import java.sql.SQLOutput;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Arrays;
 
 /**
@@ -158,7 +154,7 @@ public class RecievePubNub {
             if (value.equals("000X")) {
                 // error
             } else {
-                changeStateOfSensor(convertTemp(value), sensorId);
+                changeStateOfSensor(commandId, convertTemp(value));
                 //value will hold the temperature
             }
         } else if (commandId.equals("11100")) {
@@ -175,7 +171,7 @@ public class RecievePubNub {
             if (value.equals("000X")) {
                 // error
             } else {
-                changeStateOfSensor(convertTemp(value), sensorId);
+                changeStateOfSensor(commandId, convertTemp(value));
                 //editor.putString("roomTemperature", value.toString());
                 //editor.commit();
                 //value will hold the temperature
@@ -183,9 +179,9 @@ public class RecievePubNub {
         } else if (commandId.equals("12200")) {
             //setRoomTemp       response = ack
             if (value.equals("0000")) {
-                changeStateOfSensor(value, sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("0001")) {
-                changeStateOfSensor(value, sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("000X")) {
                 //X = error
             }
@@ -194,7 +190,7 @@ public class RecievePubNub {
             if (value.equals("000X")) {
                 // error
             } else {
-                changeStateOfSensor(convertTemp(value), sensorId);
+                changeStateOfSensor(commandId, convertTemp(value));
                 //value will hold the temperature
             }
         } else if (commandId.equals("14000")) {
@@ -202,16 +198,16 @@ public class RecievePubNub {
             if (value.equals("000X")) {
                 // error
             } else {
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
                 //value will hold the power
             }
         } else if (commandId.equals("15000")) {
             //readFireAlarmStatus       response = 0 or 1 (1=fire)
             if (value.equals("0000")) {
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
 
             } else if (value.equals("0001")) {
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
 
             } else if (value.equals("000X")) {
                 //X = error
@@ -219,54 +215,54 @@ public class RecievePubNub {
         } else if (commandId.equals("16000")) {
             //readBurglarAlarmStatus    response = 0 or 1 (1 = burglar)
             if (value.equals("0000")) {
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("0001")) {
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("000X")) {
                 //X = error
             }
         } else if (commandId.equals("17000")) {
             //read water leakage status     response = 0 or 1 (1 = leakage)
             if (value.equals("0000")) {
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("0001")) {
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("000X")) {
                 //X = error
             }
         } else if (commandId.equals("18000")) {
             //read stove status     response = status
             if (value.equals("0000")) {
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("0001")) {
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("000X")) {
                 //X = error
             }
         } else if (commandId.equals("19000")) {
             //read window status    response = status
             if (value.equals("0000")) {
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("0001")) {
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("000X")) {
                 //X = error
             }
         } else if (commandId.equals("21000")) {
             //read power outage status      response = status
             if (value.equals("0000")) {
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("0001")) {
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("000X")) {
                 //X = error
             }
         } else if (commandId.equals("22000")) {
             //read attic fan status         response = status
             if (value.equals("0000")) {
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("0001")) {
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("000X")) {
                 //X = error
             }
@@ -277,13 +273,13 @@ public class RecievePubNub {
                 editor.putString("commandId", "off");
                 editor.commit();
                 */
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("0001")) {
                 /*System.out.println("light is on");
                 editor.putString("commandId", "on");
                 editor.commit();
                 */
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("000X")) {
                 //X = error
             }
@@ -296,7 +292,7 @@ public class RecievePubNub {
                 editor.putString("commandId", "off");
                 editor.commit();*/
 
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("0001")) {
                 /*System.out.println("light is on");
 
@@ -304,7 +300,7 @@ public class RecievePubNub {
                 editor.putString("commandId", "on");
                 editor.commit();*/
 
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("000X")) {
                 //X = error
             }
@@ -312,9 +308,9 @@ public class RecievePubNub {
         } else if (commandId.equals("27000")) {
             //read outdoor light        response = status
             if (value.equals("0000")) {
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("0001")) {
-                changeStateOfSensor(getValue(value), sensorId);
+                changeStateOfSensor(commandId, getValue(value));
             } else if (value.equals("000X")) {
                 //X = error
             }
@@ -390,8 +386,9 @@ public class RecievePubNub {
             sensorType = "outdoorLamp";
         }
         for(SensorInfo sensor : DataStorage.getInstance().getSensorList()){
-            if(sensor.getType().equals(sensorType)){
+            if(sensor.getType().equalsIgnoreCase(sensorType)){
                 sensor.setValue(value);
+                System.out.println("SensorType: " + sensor.getType() + "  Value: " + sensor.getValue());
 
             }
         }
@@ -406,7 +403,8 @@ public class RecievePubNub {
     }
 
     private String getValue(String inValue){
-        String value = inValue.substring(2,3);
+        String value = inValue.substring(3,4);
+        System.out.println("InValue: " + inValue + "value: " + value);
         return value;
     }
 
