@@ -14,6 +14,7 @@ public class DataStorage {
     private String chosenHouseId;
     private String userId;
 
+
     public String getAtticOrRadiator() {
         return atticOrRadiator;
     }
@@ -29,12 +30,13 @@ public class DataStorage {
     private ArrayList<RoomInfo> roomList = new ArrayList<>();
     private ArrayList<DeviceInfo> deviceList = new ArrayList<>();
     private ArrayList<SensorInfo> sensorList = new ArrayList<>();
+    private ArrayList<SensorInfo> currentHouseSensorList = new ArrayList<>();
 
-    private DataStorage(){
+    private DataStorage() {
     }
 
-    public static DataStorage getInstance(){
-        if(dataStorage == null){
+    public static DataStorage getInstance() {
+        if (dataStorage == null) {
             dataStorage = new DataStorage();
         }
 
@@ -69,7 +71,7 @@ public class DataStorage {
         return homeServerList;
     }
 
-    public void addHomeServerToList(String name, String id, String userId ) {
+    public void addHomeServerToList(String name, String id, String userId) {
         homeServerList.add(new HomeServer(name, id, userId));
     }
 
@@ -85,16 +87,16 @@ public class DataStorage {
         return sensorList;
     }
 
-    public void addRoomToList(String name, String id, String homeServerId ) {
+    public void addRoomToList(String name, String id, String homeServerId) {
         roomList.add(new RoomInfo(id, name, homeServerId));
     }
 
-    public void addDeviceToList(String name, String id, String roomId ) {
+    public void addDeviceToList(String name, String id, String roomId) {
         deviceList.add(new DeviceInfo(name, id, roomId));
     }
 
-    public void addSensorToList(String name, String id, String type, String deviceId, String value,String houseId ) {
-        sensorList.add(new SensorInfo(name, id, type, deviceId, value,houseId));
+    public void addSensorToList(String name, String id, String type, String deviceId, String value, String houseId) {
+        sensorList.add(new SensorInfo(name, id, type, deviceId, value, houseId));
     }
 
     public String getTempSensorId() {
@@ -111,5 +113,14 @@ public class DataStorage {
 
     public void setChosenHouseId(String chosenHouseId) {
         this.chosenHouseId = chosenHouseId;
+    }
+
+
+    public ArrayList<SensorInfo> getCurrentHouseSensorList() {
+        return currentHouseSensorList;
+    }
+
+    public void setCurrentHouseSensorList(ArrayList<SensorInfo> currentHouseSensorList) {
+        this.currentHouseSensorList = currentHouseSensorList;
     }
 }

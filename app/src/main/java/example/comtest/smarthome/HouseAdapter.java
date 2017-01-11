@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 public class HouseAdapter extends ArrayAdapter {
     private ArrayList<String> house;
+
     public HouseAdapter(Context context, ArrayList<String> house) {
         super(context, R.layout.house_row, house);
         this.house = house;
@@ -30,10 +31,9 @@ public class HouseAdapter extends ArrayAdapter {
 
         title.setText(house.get(position));
 
-       if ((position % 2) == 0) {
+        if ((position % 2) == 0) {
             customView.setBackgroundColor(Color.parseColor("#801C1C1C"));
-        }
-        else{
+        } else {
             customView.setBackgroundColor(Color.parseColor("#800F0F0F"));
         }
 

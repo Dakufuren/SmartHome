@@ -375,10 +375,9 @@ public class requestToApi {
                             checkIfDone[3] = true;
                         }
                         if(checkIfDone[3] == true){
-                            System.out.println("maaaaaaaaaaaaaajjjjjssss");
                             getStateOfAllSensors(DataStorage.getInstance().getChosenHouseId());
                             if(mainActivity != null){
-
+                                mainActivity.setCurrentSensorListArray();
                                 mainActivity.gridViewUpdater(mainActivity.gridview);
                                 System.out.println("Updated gridview with:  " + DataStorage.getInstance().getChosenHouseId());
                             }
@@ -517,5 +516,6 @@ public class requestToApi {
         }
         postToServer(command+ "000" + value , sensorId, DataStorage.getInstance().getUserId(), DataStorage.getInstance().getChosenHouseId() );
     }
+
 
 }

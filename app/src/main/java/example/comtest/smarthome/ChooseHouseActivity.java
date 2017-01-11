@@ -9,19 +9,21 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 public class ChooseHouseActivity extends AppCompatActivity {
-    ArrayList<String> houses =  new ArrayList<>();
+    ArrayList<String> houses = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_house);
         setListView();
     }
-    private void setListView(){
-        for(int i=0;i<DataStorage.getInstance().getHomeServerList().size();i++){
+
+    private void setListView() {
+        for (int i = 0; i < DataStorage.getInstance().getHomeServerList().size(); i++) {
             houses.add(DataStorage.getInstance().getHomeServerList().get(i).getName());
         }
 
-        HouseAdapter houseAdapter = new HouseAdapter(getApplicationContext(),houses);
+        HouseAdapter houseAdapter = new HouseAdapter(getApplicationContext(), houses);
         ListView houseListView = (ListView) findViewById(R.id.houseList);
         houseListView.setAdapter(houseAdapter);
         houseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
